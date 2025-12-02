@@ -1,0 +1,1 @@
+export * from './colors/hex-to-rgba.pipe';

@@ -1,0 +1,14 @@
+<!-- Dropdown component  -->
+ <div class="flex justify-center h-screen items-center">
+  <div class="rounded-lg py-1 bg-white shadow-lg min-w-[200px] min-h-max" [ngStyle]="getClassForDropdown()">
+    <!-- Options div  -->
+     <div class="flex flex-col gap-1 px-1">
+      <!-- options  -->
+      @for(option of options; track option) {
+      <div class="cursor-pointer rounded-md px-2 py-1 truncate hover:bg-gray-200" (click)="selectOption(option)" [ngStyle]="getClassForOptions()" >
+        {{option.label}}
+      </div>
+      }
+     </div>
+  </div>
+ </div>

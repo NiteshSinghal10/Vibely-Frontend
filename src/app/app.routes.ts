@@ -1,3 +1,9 @@
 import { Routes } from '@angular/router';
 
-export const routes: Routes = [];
+import { HomeScreenComponent } from './screens';
+import { DropdownComponent } from './components';
+
+export const routes: Routes = [
+  { path: 'home', component: HomeScreenComponent },
+  { path: 'dropdown', component: DropdownComponent }
+];
