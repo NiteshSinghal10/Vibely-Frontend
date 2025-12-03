@@ -1,11 +1,21 @@
 <!-- Dropdown component  -->
-<div class="rounded-lg py-1 bg-white shadow-lg min-w-[200px] min-h-max" [ngStyle]="getClassForDropdown()">
+<div class="rounded-lg py-1 bg-white shadow-lg min-w-[200px] h-max overflow-hidden" [ngStyle]="getClassForDropdown()">
+  <!-- Search Bar  -->
+   @if(getIsShowSearchbar()) {
+    <div class="mx-1 mb-1">
+      <input class="w-full px-1 py-1 border border-gray-300 text-gray-700 rounded-md outline-none shadow-inner" placeholder="Search" [(ngModel)]="searchInput" />
+    </div>
+   }
+
   <!-- Options div  -->
-   <div class="flex flex-col gap-1 px-1">
+   <div class="line-clamp-1 px-1 overflow-scroll" [ngStyle]="{height: getMaxHeight() }">
     <!-- options  -->
-    @for(option of options; track option) {
-    <div class="cursor-pointer rounded-md px-2 py-1 truncate hover:bg-gray-200" (click)="selectOption(option)" [ngStyle]="getClassForOptions()" title="{{option.label}}" >
-      {{option.label}}
+    @for(option of getFilteredOptions(); track option) {
+    <div class="cursor-pointer rounded-md px-2 py-1 hover:bg-gray-200" (click)="selectOption(option)" [ngStyle]="getClassForOptions()" title="{{option.label}}" >
+      <!-- label  -->
+       <div class="truncate">
+        {{option.label}}
+       </div>
     </div>
     }
    </div>

@@ -1,3 +1,3 @@
-export * from './dropdown/dropdown.component';
+export * from './dropdown';
 export * from './navbar/navbar.component';
-export * from './chip/chip.component';
+export * from './chip';

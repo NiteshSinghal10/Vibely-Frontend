@@ -1,30 +1,40 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { IDropdownConfig, IOption } from './dropdown.types';
 
 @Component({
   selector: 'app-dropdown',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './dropdown.component.html'
 })
 export class DropdownComponent {
-  @Input() options?: IOption[] = [
+  @Input() options: IOption[] = [
     { label: 'Option 1', value: 'option-1' },
     { label: 'Option 2', value: 'option-2' },
     { label: 'Option 3', value: 'option-3' },
     { label: 'Option 4', value: 'option-4' },
-    { label: 'Option 5', value: 'option-5' }
+    { label: 'Option 5', value: 'option-5' },
+    { label: 'Option 6', value: 'option-6' },
+    { label: 'Option 7', value: 'option-7' },
+    { label: 'Option 8', value: 'option-8' },
+    { label: 'Option 9', value: 'option-9' },
+    { label: 'Option 10', value: 'option-10' },
+    { label: 'Option 11', value: 'option-11' }
   ];
 
   @Input() config?: IDropdownConfig = {
     textSize: '14px',
     textColor: '#636363',
     maxHeight: 'sm',
-    maxWidth: 'sm'
+    maxWidth: 'sm',
+    searchBar: true
   }
 
   @Output() selectedOption = new EventEmitter<IOption>();
+
+  searchInput = '';
 
   private getSize(size?: string) {
     switch(size) {
@@ -39,6 +49,10 @@ export class DropdownComponent {
     }
   }
 
+  getIsShowSearchbar() {
+    return this.config ? this.config.searchBar : false;
+  }
+
   getClassForOptions() {
     const style = this.config
     ? {
@@ -49,16 +63,26 @@ export class DropdownComponent {
 
     return style;
   }
+  
+  getMaxHeight() {
+    return this.config ? this.getSize(this.config.maxHeight) : ''
+  }
+
+  getMaxWidth() {
+    return this.config ? this.getSize(this.config.maxWidth) : ''
+  }
 
   getClassForDropdown() {
-    const style = this.config
-    ? {
-      maxHeight: this.getSize(this.config.maxHeight),
-      maxWidth: this.getSize(this.config.maxWidth)
-    }
-    : {};
+    const style = {
+      maxHeight: this.getMaxHeight,
+      maxWidth: this.getMaxWidth
+    };
 
     return style;
+  }
+
+  getFilteredOptions() {
+    return this.options.filter(option => option.label.toLowerCase().includes(this.searchInput.toLowerCase()));
   }
 
   selectOption(option: IOption) {

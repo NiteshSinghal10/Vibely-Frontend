@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 
-import { DropdownDirective } from '../../directives';
-
 @Component({
   selector: 'app-navbar',
-  imports: [DropdownDirective],
+  imports: [],
   templateUrl: './navbar.component.html'
 })
 export class NavbarComponent {

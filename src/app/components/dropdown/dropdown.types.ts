@@ -8,4 +8,5 @@ export interface IDropdownConfig {
   textColor?: string; // For options text
   maxHeight?: string; // For dropdown height
   maxWidth?: 'sm' | 'md' | 'lg' | string; // For dropdown width
+  searchBar?: boolean; // To show searchbar or not
 }

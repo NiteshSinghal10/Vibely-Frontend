@@ -1,21 +1,7 @@
 import { ComponentRef, Injectable, Injector, Type } from '@angular/core';
-import { Overlay, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
-
-export interface OverlayConfig {
-  width?: string | number;
-  height?: string | number;
-  minWidth?: string | number;
-  minHeight?: string | number;
-  maxWidth?: string | number;
-  maxHeight?: string | number;
-  hasBackdrop?: boolean;
-  backdropClass?: string;
-  panelClass?: string | string[];
-  positionStrategy?: PositionStrategy;
-  scrollStrategy?: any;
-  disposeOnNavigation?: boolean;
-}
+import { OverlayConfig } from './overlay.types';
 
 @Injectable({
   providedIn: 'root',
