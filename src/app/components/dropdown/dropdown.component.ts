@@ -9,7 +9,7 @@ import { IDropdownConfig, IOption } from './dropdown.types';
   templateUrl: './dropdown.component.html'
 })
 export class DropdownComponent {
-  @Input() options: IOption[] = [
+  @Input() options?: IOption[] = [
     { label: 'Option 1', value: 'option-1' },
     { label: 'Option 2', value: 'option-2' },
     { label: 'Option 3', value: 'option-3' },
