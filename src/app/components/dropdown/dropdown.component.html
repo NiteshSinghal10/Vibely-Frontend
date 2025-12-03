@@ -1,17 +1,22 @@
 <!-- Dropdown component  -->
-<div class="rounded-lg py-1 bg-white shadow-lg min-w-[200px] h-max overflow-hidden" [ngStyle]="getClassForDropdown()">
+<div class="rounded-lg py-1 bg-white shadow-lg min-w-[200px] h-max overflow-x-hidden" [style.width]="getWidth()">
   <!-- Search Bar  -->
    @if(getIsShowSearchbar()) {
     <div class="mx-1 mb-1">
-      <input class="w-full px-1 py-1 border border-gray-300 text-gray-700 rounded-md outline-none shadow-inner" placeholder="Search" [(ngModel)]="searchInput" />
+      <input class="w-full px-1 py-1 border border-gray-300 text-gray-700 rounded-md outline-none shadow-inner" [placeholder]="getSearchBarPlaceholder()" [(ngModel)]="searchInput" />
     </div>
    }
 
   <!-- Options div  -->
-   <div class="line-clamp-1 px-1 overflow-scroll" [ngStyle]="{height: getMaxHeight() }">
+   <div class="line-clamp-1 px-1 overflow-scroll" [ngStyle]="{ maxHeight: getMaxHeight() }">
     <!-- options  -->
     @for(option of getFilteredOptions(); track option) {
-    <div class="cursor-pointer rounded-md px-2 py-1 hover:bg-gray-200" (click)="selectOption(option)" [ngStyle]="getClassForOptions()" title="{{option.label}}" >
+    <div class="flex items-center gap-3 cursor-pointer rounded-md px-2 py-1 hover:bg-gray-200" (click)="selectOption(option)" [ngStyle]="getClassForOptions()" title="{{option.label}}" >
+      <!-- Option Prefix  -->
+      @if(getIsOptionPrefix()) {
+        <img src="{{option.imgSrc}}" alt="img" class="h-3">
+      }
+
       <!-- label  -->
        <div class="truncate">
         {{option.label}}
@@ -19,4 +24,11 @@
     </div>
     }
    </div>
+
+  <!-- If search is not found in options  -->
+   @if(!getFilteredOptions().length) {
+    <div class="mx-3 my-1 text-gray-400">
+      {{getSearchNoFoundPlaceholder()}}
+    </div>
+   }
 </div>

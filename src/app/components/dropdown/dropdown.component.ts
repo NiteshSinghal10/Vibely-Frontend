@@ -28,8 +28,11 @@ export class DropdownComponent {
     textSize: '14px',
     textColor: '#636363',
     maxHeight: 'sm',
-    maxWidth: 'sm',
-    searchBar: true
+    width: 'sm',
+    searchBar: true,
+    optionPrefix: false,
+    searchPlaceHolder: 'Search',
+    searchNotFound: 'No Search Matches'
   }
 
   @Output() selectedOption = new EventEmitter<IOption>();
@@ -47,6 +50,18 @@ export class DropdownComponent {
       default:
         return '';
     }
+  }
+  
+  getSearchBarPlaceholder() {
+    return this.config?.searchPlaceHolder ?? '';
+  }
+
+  getSearchNoFoundPlaceholder() {
+    return this.config?.searchNotFound ?? '';
+  }
+
+  getIsOptionPrefix() {
+    return this.config?.optionPrefix;
   }
 
   getIsShowSearchbar() {
@@ -68,17 +83,8 @@ export class DropdownComponent {
     return this.config ? this.getSize(this.config.maxHeight) : ''
   }
 
-  getMaxWidth() {
-    return this.config ? this.getSize(this.config.maxWidth) : ''
-  }
-
-  getClassForDropdown() {
-    const style = {
-      maxHeight: this.getMaxHeight,
-      maxWidth: this.getMaxWidth
-    };
-
-    return style;
+  getWidth() {
+    return this.config ? this.getSize(this.config.width) : ''
   }
 
   getFilteredOptions() {
