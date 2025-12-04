@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { DropdownDirective } from '../../directives';
 import { CountryService } from '../../services/country/country.service';
-import { IOption, IDropdownConfig, SelectedChipsComponentComponent } from '../../components';
+import { IOption, IDropdownConfig, SelectedChipsComponentComponent, IChip } from '../../components';
 import { PlusAsset } from '../../assets';
 
 @Component({
@@ -30,6 +30,10 @@ export class HomeScreenComponent implements OnInit {
     this.countryService.allCountries().subscribe(values => {
       this.options = [ { label: 'Any', value: 'any', imgSrc: 'earth.png' }, ...values.map(value => ({ label: value.name.common, value: value.cca3, imgSrc: value.flags.svg }))]
     })
+  }
+
+  get chips(): IChip[] {
+    return this.options.filter(option => option.selected).map(option => ({ label: option.label, value: option.value, bgColor: '#FF0000'}))
   }
 
   optionSelected(option: IOption) {

@@ -1,6 +1,6 @@
 <div
   class="flex flex-wrap gap-x-2 gap-y-1 border rounded-xl h-max p-2 border-gray-200 bg-bg-gray shadow-inner text-shadow-black overflow-y-scroll"
-  [style.maxHeight]="maxHeight" [style.width]="width">
+  [style.maxHeight]="maxHeight" [style.minHeight]="minHeight" [style.width]="width">
   @for(chip of chips; track chip) {
   <app-chip [chip]="chip" [config]="chipConfig" />
   }
