@@ -2,6 +2,7 @@ export interface IOption {
   label: string;
   value: string;
   imgSrc?: string;
+  selected?: boolean;
 }
 
 export interface IDropdownConfig {
@@ -13,4 +14,5 @@ export interface IDropdownConfig {
   optionPrefix?: boolean; // To add prefix image in every option
   searchPlaceHolder?: string; // Search Bar place holder
   searchNotFound?: string;
+  multiSelect?: boolean;
 }

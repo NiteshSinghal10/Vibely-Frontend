@@ -22,12 +22,17 @@ export class HomeScreenComponent implements OnInit {
     searchBar: true,
     optionPrefix: true,
     searchPlaceHolder: 'Search',
-    searchNotFound: 'No Search Matches'
+    searchNotFound: 'No Options',
+    multiSelect: true
   }
 
   ngOnInit(): void {
     this.countryService.allCountries().subscribe(values => {
-      this.options = [ ...values.map(value => ({ label: value.name.common, value: '1', imgSrc: value.flags.svg })), { label: 'Any', value: '1', imgSrc: 'earth.png' }]
+      this.options = [ ...values.map(value => ({ label: value.name.common, value: value.cca3, imgSrc: value.flags.svg })), { label: 'Any', value: 'any', imgSrc: 'earth.png' }]
     })
+  }
+
+  optionSelected(option: any) {
+    console.log("--", option)
   }
 }

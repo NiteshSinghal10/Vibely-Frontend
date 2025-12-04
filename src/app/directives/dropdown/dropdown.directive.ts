@@ -16,6 +16,7 @@ export class DropdownDirective extends CommonDirective<DropdownComponent> {
 
   @Output() selectedOption = new EventEmitter<IOption>();
   
+  @Output() selectionComplete = new EventEmitter<Boolean>();
 
   constructor(
     overlayService: OverlayService,
@@ -39,8 +40,13 @@ export class DropdownDirective extends CommonDirective<DropdownComponent> {
 
   override injectOutput(): void {
     this.componentRef?.instance.selectedOption.subscribe(value => {
+      if(!this.config?.multiSelect) {
+        this.closeOverlay()
+      }
+
       this.selectedOption.emit(value);
-      this.closeOverlay()
-    })
+    });
+
+    this.overlayRef?.backdropClick().subscribe(() => this.selectionComplete.emit(true));
   }
 }

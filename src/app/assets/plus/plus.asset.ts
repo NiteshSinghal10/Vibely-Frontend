@@ -6,8 +6,8 @@ import { Component, Input } from '@angular/core';
   templateUrl: './plus.asset.svg'
 })
 export class PlusComponent {
-  @Input() height = '20';
-  @Input() width = '20';
+  @Input() height = '18';
+  @Input() width = '18';
   @Input() fill = '#ff0000';
   @Input() class = '';
 }

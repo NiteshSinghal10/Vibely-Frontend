@@ -6,5 +6,6 @@ export interface ICountries {
   name: {
     common: string,
     official: string
-  }
+  },
+  cca3: string;
 }

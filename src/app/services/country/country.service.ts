@@ -11,7 +11,7 @@ export class CountryService {
 
   constructor(private networkService: NetworkService) { }
 
-  allCountries(params: IParams = { fields: 'name,flags' }) {
+  allCountries(params: IParams = { fields: 'name,flags,cca3' }) {
     return this.networkService.get<Array<ICountries>>('/v3.1/all', params, this.domain);
   }
 }

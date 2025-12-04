@@ -32,12 +32,15 @@ export class DropdownComponent {
     searchBar: true,
     optionPrefix: false,
     searchPlaceHolder: 'Search',
-    searchNotFound: 'No Search Matches'
+    searchNotFound: 'No Options',
+    multiSelect: true
   }
 
   @Output() selectedOption = new EventEmitter<IOption>();
 
   searchInput = '';
+
+  optionsSelectedByUser: IOption[] = []
 
   private getSize(size?: string) {
     switch(size) {
@@ -50,6 +53,14 @@ export class DropdownComponent {
       default:
         return '';
     }
+  }
+
+  getIsOptionSelected(option: IOption) {
+    return !!(option.selected) || (this.optionsSelectedByUser.some(selectedOption => selectedOption.value === option.value));
+  }
+
+  getIsMultiSelect() {
+    return !!(this.config?.multiSelect);
   }
   
   getSearchBarPlaceholder() {
@@ -92,6 +103,14 @@ export class DropdownComponent {
   }
 
   selectOption(option: IOption) {
+    if(this.getIsMultiSelect()) {
+      if (this.getIsOptionSelected(option)) {
+        this.optionsSelectedByUser = this.optionsSelectedByUser.filter(selectedOption => selectedOption.value !== option.value);
+      } else {
+        this.optionsSelectedByUser.push(option);
+      }
+    }
+
     this.selectedOption.emit(option);
   }
 }

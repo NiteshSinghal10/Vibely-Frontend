@@ -12,6 +12,12 @@
     <!-- options  -->
     @for(option of getFilteredOptions(); track option) {
     <div class="flex items-center gap-3 cursor-pointer rounded-md px-2 py-1 hover:bg-gray-200" (click)="selectOption(option)" [ngStyle]="getClassForOptions()" title="{{option.label}}" >
+
+      <!-- Multiselect Checkbox  -->
+       @if(getIsMultiSelect()) {
+        <input type="checkbox" class="cursor-pointer" [checked]="getIsOptionSelected(option)">
+       }
+
       <!-- Option Prefix  -->
       @if(getIsOptionPrefix()) {
         <img src="{{option.imgSrc}}" alt="img" class="h-3">
