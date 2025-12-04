@@ -1,11 +1,11 @@
-<div class="flex gap-2 items-center justify-between w-max border-0 rounded-lg py-0.5 px-2 bg-amber-300" [style.background]="chip.bgColor | hexToRgba:0.2"
-  [style.color]="getTextColor()" [style.font-size]="getTextSize()" >
+<div class="flex gap-2 items-center justify-between border-0 rounded-lg py-0.5 px-2 bg-amber-300" [style.background]="chip.bgColor | hexToRgba:0.2"
+  [style.color]="textColor" [style.font-size]="textSize" >
   <!-- Label  -->
-  <p [style.maxWidth]="getMaxWidth()" class="truncate" title="{{chip.label}}" >{{chip.label}}</p>
+  <p [style.maxWidth]="maxWidth" class="truncate" title="{{chip.label}}" >{{chip.label}}</p>
 
   <!-- Cross Icon  -->
-  <div class="rounded-lg cursor-pointer" (click)="clickCrossIcon()" [style.background]="getCrossButtonBgColor()"
+  <div class="rounded-lg cursor-pointer" (click)="clickCrossIcon()" [style.background]="crossButtonBgColor"
     (mouseenter)="isHovered = true" (mouseleave)="isHovered = false"  >
-    <asset-cross [height]="getCrossIconSize().height" [width]="getCrossIconSize().width" />
+    <asset-cross [height]="crossIconSize.height" [width]="crossIconSize.width" />
   </div>
 </div>

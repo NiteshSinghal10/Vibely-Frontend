@@ -6,4 +6,19 @@
   --color-background: #A6D8FF;
   --color-light-gray: #D1D5DB;
   --color-dark-gray: #757575;
+
+  /* Notion Like Colors */
+  --color-red: #B91C1C;
+  --color-blue: #1D4ED8;
+  --color-green: #15803D;
+  --color-yellow: #CA8A04;
+  --color-purple: #7C3AED;
+  --color-gray: #555555;
+
+  --color-bg-red: #FEE2E2;
+  --color-bg-blue: #DBEAFE;
+  --color-bg-green: #DCFCE7;
+  --color-bg-yellow: #FEF3C7;
+  --color-bg-purple: #EDE9FE;
+  --color-bg-gray: #F5F5F5;
 }

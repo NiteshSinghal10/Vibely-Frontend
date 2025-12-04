@@ -61,27 +61,27 @@ export class DropdownComponent {
     return !!(option.selected) || (this.optionsSelectedByUser.some(selectedOption => selectedOption.value === option.value));
   }
 
-  getIsMultiSelect() {
+  get isMultiSelect() {
     return !!(this.config?.multiSelect);
   }
   
-  getSearchBarPlaceholder() {
+  get searchBarPlaceholder() {
     return this.config?.searchPlaceHolder ?? '';
   }
 
-  getSearchNoFoundPlaceholder() {
+  get searchNoFoundPlaceholder() {
     return this.config?.searchNotFound ?? '';
   }
 
-  getIsOptionPrefix() {
+  get isOptionPrefix() {
     return this.config?.optionPrefix;
   }
 
-  getIsShowSearchbar() {
+  get isShowSearchbar() {
     return this.config ? this.config.searchBar : false;
   }
 
-  getClassForOptions() {
+  get classForOptions() {
     const style = this.config
     ? {
         color: this.config.textColor,
@@ -92,21 +92,21 @@ export class DropdownComponent {
     return style;
   }
   
-  getMaxHeight() {
+  get maxHeight() {
     return this.config ? this.getSize(this.config.maxHeight) : ''
   }
 
-  getWidth() {
+  get width() {
     return this.config ? this.getSize(this.config.width) : ''
   }
 
-  getFilteredOptions() {
+  get filteredOptions() {
     return this.options.filter(option => option.label.toLowerCase().includes(this.searchInput.toLowerCase()));
   }
 
   selectOption(option: IOption) {
 
-    if(this.getIsMultiSelect()) {
+    if(this.isMultiSelect) {
       if (this.getIsOptionSelected(option)) {
         this.optionsSelectedByUser = this.optionsSelectedByUser.filter(selectedOption => selectedOption.value !== option.value);
         this.deselectedOption.emit(option);

@@ -1,25 +1,25 @@
 <!-- Dropdown component  -->
-<div class="rounded-lg py-1 bg-white shadow-lg min-w-[200px] h-max overflow-x-hidden" [style.width]="getWidth()">
+<div class="rounded-lg py-1 bg-white shadow-lg min-w-[200px] h-max overflow-x-hidden" [style.width]="width">
   <!-- Search Bar  -->
-   @if(getIsShowSearchbar()) {
+   @if(isShowSearchbar) {
     <div class="mx-1 mb-1">
-      <input class="w-full px-1 py-1 border border-gray-300 text-gray-700 rounded-md outline-none shadow-inner" [placeholder]="getSearchBarPlaceholder()" [(ngModel)]="searchInput" />
+      <input class="w-full px-1 py-1 border border-gray-300 text-gray-700 rounded-md outline-none shadow-inner" [placeholder]="searchBarPlaceholder" [(ngModel)]="searchInput" />
     </div>
    }
 
   <!-- Options div  -->
-   <div class="line-clamp-1 px-1 overflow-scroll" [ngStyle]="{ maxHeight: getMaxHeight() }">
+   <div class="line-clamp-1 px-1 overflow-scroll" [ngStyle]="{ maxHeight: maxHeight }">
     <!-- options  -->
-    @for(option of getFilteredOptions(); track option) {
-    <div class="flex items-center gap-3 cursor-pointer rounded-md px-2 py-1 hover:bg-gray-200" (click)="selectOption(option)" [ngStyle]="getClassForOptions()" title="{{option.label}}" >
+    @for(option of filteredOptions; track option) {
+    <div class="flex items-center gap-3 cursor-pointer rounded-md px-2 py-1 hover:bg-gray-200" (click)="selectOption(option)" [ngStyle]="classForOptions" title="{{option.label}}" >
 
       <!-- Multiselect Checkbox  -->
-       @if(getIsMultiSelect()) {
+       @if(isMultiSelect) {
         <input type="checkbox" class="cursor-pointer" [checked]="getIsOptionSelected(option)">
        }
 
       <!-- Option Prefix  -->
-      @if(getIsOptionPrefix()) {
+      @if(isOptionPrefix) {
         <img src="{{option.imgSrc}}" alt="img" class="h-3">
       }
 
@@ -32,9 +32,9 @@
    </div>
 
   <!-- If search is not found in options  -->
-   @if(!getFilteredOptions().length) {
+   @if(!filteredOptions.length) {
     <div class="mx-3 my-1 text-gray-400">
-      {{getSearchNoFoundPlaceholder()}}
+      {{searchNoFoundPlaceholder}}
     </div>
    }
 </div>

@@ -36,24 +36,24 @@ export class ChipComponent {
 
   isHovered = false;
 
-  getMaxWidth() {
+  get maxWidth() {
     return this.config ? this.config.maxWidth : '200px'
   }
 
-  getCrossIconSize() {
+  get crossIconSize() {
     const size = this.config ? { width: this.config.crossIcon.width ?? '20', height: this.config.crossIcon.height ?? '20' } : { width: '20', height: '20' }
     return size;
   }
 
-  getCrossButtonBgColor() {
+  get crossButtonBgColor() {
     return this.isHovered ? this.hexToRgbaPipe.transform(this.chip.bgColor, 0.3) : 'transparent';
   }
 
-  getTextColor() {
+  get textColor() {
     return this.config ? this.config.textColor : '';
   }
 
-  getTextSize() {
+  get textSize() {
     return this.config ? this.config.textSize : '';
   }
 
