@@ -1,0 +1,1 @@
+export * from './selected-chips-component.component';

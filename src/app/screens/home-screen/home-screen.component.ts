@@ -3,11 +3,11 @@ import { Component, OnInit } from '@angular/core';
 import { DropdownDirective } from '../../directives';
 import { CountryService } from '../../services/country/country.service';
 import { IOption, IDropdownConfig } from '../../components';
-import { PlusComponent } from '../../assets';
+import { PlusAsset } from '../../assets';
 
 @Component({
   selector: 'app-home-screen',
-  imports: [DropdownDirective, PlusComponent],
+  imports: [DropdownDirective, PlusAsset],
   templateUrl: './home-screen.component.html'
 })
 export class HomeScreenComponent implements OnInit {
@@ -28,7 +28,7 @@ export class HomeScreenComponent implements OnInit {
 
   ngOnInit(): void {
     this.countryService.allCountries().subscribe(values => {
-      this.options = [ ...values.map(value => ({ label: value.name.common, value: value.cca3, imgSrc: value.flags.svg })), { label: 'Any', value: 'any', imgSrc: 'earth.png' }]
+      this.options = [ { label: 'Any', value: 'any', imgSrc: 'earth.png' }, ...values.map(value => ({ label: value.name.common, value: value.cca3, imgSrc: value.flags.svg }))]
     })
   }
 

@@ -1,2 +1,2 @@
 export * from './chip.component';
-export * from './chip.interface';
+export * from './chip.types';
