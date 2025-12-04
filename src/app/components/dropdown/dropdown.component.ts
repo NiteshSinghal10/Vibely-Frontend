@@ -37,6 +37,8 @@ export class DropdownComponent {
   }
 
   @Output() selectedOption = new EventEmitter<IOption>();
+  
+  @Output() deselectedOption = new EventEmitter<IOption>();
 
   searchInput = '';
 
@@ -103,9 +105,12 @@ export class DropdownComponent {
   }
 
   selectOption(option: IOption) {
+
     if(this.getIsMultiSelect()) {
       if (this.getIsOptionSelected(option)) {
         this.optionsSelectedByUser = this.optionsSelectedByUser.filter(selectedOption => selectedOption.value !== option.value);
+        this.deselectedOption.emit(option);
+        return;
       } else {
         this.optionsSelectedByUser.push(option);
       }

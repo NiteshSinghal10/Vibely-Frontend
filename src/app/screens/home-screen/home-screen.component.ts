@@ -32,7 +32,19 @@ export class HomeScreenComponent implements OnInit {
     })
   }
 
-  optionSelected(option: any) {
-    console.log("--", option)
+  optionSelected(option: IOption) {
+    const optionIndex = this.options.findIndex(inputOption => inputOption.value === option.value);
+
+    if(optionIndex !== -1) {
+      this.options[optionIndex].selected = true; 
+    }
+  }
+
+  optionDeselected(option: IOption) {
+    const optionIndex = this.options.findIndex(inputOption => inputOption.value === option.value);
+
+    if(optionIndex !== -1) {
+      this.options[optionIndex].selected = false; 
+    }
   }
 }

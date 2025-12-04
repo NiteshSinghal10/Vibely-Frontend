@@ -18,6 +18,8 @@ export class DropdownDirective extends CommonDirective<DropdownComponent> {
   
   @Output() selectionComplete = new EventEmitter<Boolean>();
 
+  @Output() deselectedOption = new EventEmitter<IOption>();
+
   constructor(
     overlayService: OverlayService,
     elementRef: ElementRef,
@@ -46,6 +48,8 @@ export class DropdownDirective extends CommonDirective<DropdownComponent> {
 
       this.selectedOption.emit(value);
     });
+
+    this.componentRef?.instance.deselectedOption.subscribe(value => this.deselectedOption.emit(value));
 
     this.overlayRef?.backdropClick().subscribe(() => this.selectionComplete.emit(true));
   }
