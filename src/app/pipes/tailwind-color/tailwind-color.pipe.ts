@@ -7,7 +7,7 @@ export class TailwindColorPipe implements PipeTransform {
 
   transform(colorName: string): string {
     return getComputedStyle(document.documentElement)
-      .getPropertyValue(`--color-${colorName}`)
+      .getPropertyValue(colorName)
       .trim();
   }
 

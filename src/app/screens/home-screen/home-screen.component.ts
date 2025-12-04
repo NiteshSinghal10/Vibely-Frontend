@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 
 import { DropdownDirective } from '../../directives';
 import { CountryService } from '../../services/country/country.service';
-import { IOption, IDropdownConfig } from '../../components';
+import { IOption, IDropdownConfig, SelectedChipsComponentComponent } from '../../components';
 import { PlusAsset } from '../../assets';
 
 @Component({
   selector: 'app-home-screen',
-  imports: [DropdownDirective, PlusAsset],
+  imports: [DropdownDirective, PlusAsset, SelectedChipsComponentComponent],
   templateUrl: './home-screen.component.html'
 })
 export class HomeScreenComponent implements OnInit {

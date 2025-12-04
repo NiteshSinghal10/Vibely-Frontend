@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ChipComponent, IChip, IChipConfig } from '../chip';
 import { TailwindColorPipe } from '../../pipes';
 
@@ -8,7 +8,7 @@ import { TailwindColorPipe } from '../../pipes';
   templateUrl: './selected-chips-component.component.html',
   providers: [TailwindColorPipe]
 })
-export class SelectedChipsComponentComponent {
+export class SelectedChipsComponentComponent implements OnInit {
   @Input() maxHeight = '300px';
   @Input() width = '300px';
   @Input() chips: IChip[] = [
@@ -20,7 +20,11 @@ export class SelectedChipsComponentComponent {
 
   constructor(private tailwindColorPipe: TailwindColorPipe) {}
 
-  protected chipConfig: IChipConfig = {
+  ngOnInit(): void {
+    this.chipConfig.textColor = this.tailwindColorPipe.transform('--color-gray');
+  }
+
+  chipConfig: IChipConfig = {
     textColor: '',
     textSize: '14px',
     maxWidth: `calc(${this.width} - 90px)`,
