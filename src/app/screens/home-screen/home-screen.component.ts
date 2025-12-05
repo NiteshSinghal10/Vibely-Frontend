@@ -4,14 +4,20 @@ import { DropdownDirective } from '../../directives';
 import { CountryService } from '../../services/country/country.service';
 import { IOption, IDropdownConfig, SelectedChipsComponentComponent, IChip } from '../../components';
 import { PlusAsset } from '../../assets';
+import { TailwindColorPipe } from '../../pipes';
 
 @Component({
   selector: 'app-home-screen',
   imports: [DropdownDirective, PlusAsset, SelectedChipsComponentComponent],
-  templateUrl: './home-screen.component.html'
+  templateUrl: './home-screen.component.html',
+  providers: [TailwindColorPipe]
 })
 export class HomeScreenComponent implements OnInit {
-  constructor(private countryService: CountryService) {  }
+
+  constructor(
+    private countryService: CountryService,
+    private tailwindColorPipe: TailwindColorPipe
+  ) { }
   
   options: IOption[] = []
   config: IDropdownConfig = {
@@ -33,7 +39,7 @@ export class HomeScreenComponent implements OnInit {
   }
 
   get chips(): IChip[] {
-    return this.options.filter(option => option.selected).map(option => ({ label: option.label, value: option.value, bgColor: '#FF0000'}))
+    return this.options.filter(option => option.selected).map(option => ({ label: option.label, value: option.value, bgColor: this.tailwindColorPipe.transform('--color-blue')}))
   }
 
   optionSelected(option: IOption) {

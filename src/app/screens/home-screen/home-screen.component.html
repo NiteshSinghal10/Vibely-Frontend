@@ -14,7 +14,7 @@
   <!-- Filters & Start Chating Button  -->
    <div class="w-full h-[47vh] flex flex-col justify-between items-center gap-4 pt-4 pb-16">
     <!-- Filters  -->
-     <div class="w-[30vw] flex flex-col gap-4">
+     <div class="w-[24vw] flex flex-col gap-4">
       <!-- Gender  -->
       <div class="flex flex-col gap-2">
         <p class="text-lg font-semibold text-gray-800">Gender</p>
@@ -29,15 +29,17 @@
 
       <!-- country  -->
       <div class="flex flex-col gap-2">
-        <p class="font-semibold text-lg text-gray-800">Country</p>
+        <div class="flex justify-between">
+          <p class="font-semibold text-lg text-gray-800">Country</p>
 
-        <div appDropdown [options]="options" [config]="config" (selectedOption)="optionSelected($event)" (deselectedOption)="optionDeselected($event)" class="flex items-center gap-1 border border-primary rounded-full overflow-hidden py-0.5 pr-3 pl-2 w-max cursor-pointer" >
-          <asset-plus [class]="'fill-primary'"/>
-          <p class="text-primary">Add Country</p>
+          <div appDropdown [options]="options" [config]="config" (selectedOption)="optionSelected($event)" (deselectedOption)="optionDeselected($event)" class="flex items-center gap-1 border border-primary rounded-full overflow-hidden py-0.5 pr-3 pl-2 w-max cursor-pointer" >
+            <asset-plus [class]="'fill-primary'"/>
+            <p class="text-primary">Add Country</p>
+          </div>
         </div>
-
+        
         <!-- chips  -->
-        <app-selected-chips-component [minHeight]="'80px'" [maxHeight]="'100px'" [chips]="chips" />
+        <app-selected-chips-component [minHeight]="'80px'" [maxHeight]="'100px'" [width]="'100%'" [chips]="chips" />
       </div>
      </div>
 
