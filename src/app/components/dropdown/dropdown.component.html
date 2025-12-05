@@ -20,11 +20,11 @@
 
       <!-- Option Prefix  -->
       @if(isOptionPrefix) {
-        <img src="{{option.imgSrc}}" alt="img" class="h-3">
+        <img src="{{option.imgSrc}}" alt="img" [style.width]="getImageWidth(option)" [style.height]="getImageHeight(option)">
       }
 
       <!-- label  -->
-       <div class="truncate">
+       <div class="truncate" [ngStyle]="{ color: getOptionTextColor(option) }" >
         {{option.label}}
        </div>
     </div>

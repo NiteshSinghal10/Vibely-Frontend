@@ -1,12 +1,13 @@
 import { Directive, ElementRef, EventEmitter, Input, Output } from '@angular/core';
 import { CommonDirective } from '../common';
-import { DropdownComponent } from '../../components';
-
-import { OverlayService } from '../../services';
+import { DropdownComponent } from '../../components/dropdown/dropdown.component';
 import { IDropdownConfig, IOption } from '../../components/dropdown/dropdown.types';
 
+import { OverlayService } from '../../services';
+
 @Directive({
-  selector: '[appDropdown]'
+  selector: '[appDropdown]',
+  standalone: true 
 })
 export class DropdownDirective extends CommonDirective<DropdownComponent> {
 

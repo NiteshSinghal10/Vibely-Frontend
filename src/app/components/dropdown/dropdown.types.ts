@@ -3,6 +3,9 @@ export interface IOption {
   value: string;
   imgSrc?: string;
   selected?: boolean;
+  textColor?: string;
+  imgWidth?: string;
+  imgHeight?: string;
 }
 
 export interface IDropdownConfig {

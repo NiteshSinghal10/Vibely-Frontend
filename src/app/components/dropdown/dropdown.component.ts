@@ -84,12 +84,23 @@ export class DropdownComponent {
   get classForOptions() {
     const style = this.config
     ? {
-        color: this.config.textColor,
         fontSize: this.config.textSize,
     }
     : {};
 
     return style;
+  }
+
+  getOptionTextColor(option: IOption) {
+    return option.textColor ?? this.config?.textColor ?? '';
+  }
+
+  getImageWidth(option: IOption) {
+    return option.imgWidth ?? '20px';
+  }
+
+  getImageHeight(option: IOption) {
+    return option.imgHeight ?? '20px';
   }
   
   get maxHeight() {

@@ -9,7 +9,7 @@
   </div>
 
   <!-- Profile  -->
-  <div class="h-full flex justify-center items-center">
+  <div class="h-full flex justify-center items-center" appDropdown [options]="options" [config]="config" (selectedOption)="selectedOption($event)" >
     <img src="profile.png" alt="Profile Image" class="h-10 cursor-pointer">
   </div>
 </div>
