@@ -15,6 +15,7 @@ export class NavbarComponent {
   options: IOption[] = [
     { label: 'Profile', value: 'profile', imgSrc: 'profile-2.svg' },
     { label: 'Chats', value: 'chats', imgSrc: 'chat.svg' },
+    { label: 'Subscription', value: 'subscription', imgSrc: 'chat.svg' },
     { label: 'Settings', value: 'settings', imgSrc: 'setting.svg' },
     { label: 'Logout', value: 'logout', imgSrc: 'logout.svg', textColor: '#c11a1a' }
   ]
