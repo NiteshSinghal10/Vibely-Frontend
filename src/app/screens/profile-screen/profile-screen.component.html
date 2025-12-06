@@ -1,7 +1,7 @@
 <div class="h-[92vh]">
-  <div class="h-1/4 bg-primary flex justify-start items-center gap-8">
+  <div class="h-1/4 bg-linear-to-t from-primary from-30% to-background flex justify-start items-center gap-8">
     <!-- profile Image  -->
-    <div class="w-max h-max rounded-full overflow-hidden border-4 border-blue shadow shadow-blue ml-16">
+    <div class="w-max h-max rounded-full overflow-hidden border-4 border-blue shadow-lg shadow-blue ml-16">
       <img src="https://lh3.googleusercontent.com/a/ACg8ocKUuawnhXl1UWaHhNiqWRjrtARXEOUuRtpcCN9ANPJHD3-c3pL5=s100" alt="Profile Image">
     </div>
 
@@ -31,17 +31,20 @@
     </div>
   </div>
 
-  <div class="p-12 flex gap-4">
+  <div class="p-12 flex gap-4 h-3/4">
     <!-- Interests  -->
-     <div class="p-4 rounded-xl shadow-xl w-[35%] flex flex-col gap-4 border border-gray-100">
+     <div class="p-4 rounded-xl shadow-xl w-[40%] flex flex-col gap-4 border border-gray-100">
       <p class="text-2xl text-primary font-semibold">Interests</p>
 
       <!-- chips  -->
-      <app-selected-chips-component [minHeight]="'80px'" [maxHeight]="'100px'" [width]="'100%'" [chips]="chips" />
+      <app-multi-select-chips [minHeight]="'330px'" [maxHeight]="'330px'" [width]="'100%'" [chips]="chips"
+      (selectedChip)="selectInterest($event)" (deselectedChip)="deselectInterest($event)" />
+
+      <button class="cursor-pointer py-1 bg-green border border-gray-100 rounded-full text-white">Update</button>
      </div>
 
      <!-- Current Plan  -->
-      <div class="p-4 w-[65%] border border-gray-100 rounded-xl shadow-xl ">
+      <div class="p-4 w-[60%] border border-gray-100 rounded-xl shadow-xl ">
         <p class="text-2xl text-primary font-semibold">Current Plan</p>
       </div>
   </div>

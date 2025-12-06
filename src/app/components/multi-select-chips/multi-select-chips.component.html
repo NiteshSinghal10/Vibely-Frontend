@@ -1,0 +1,19 @@
+<div
+  class="flex flex-wrap gap-2 p-2 rounded-xl border border-gray-100 bg-bg-gray shadow-inner overflow-y-scroll"
+  [style.width]="width" [style.maxHeight]="maxHeight" [style.minHeight]="minHeight">
+  <!-- chip  -->
+  @for(chip of chipsList; track chip) {
+  <div class="px-2 py-0.5 flex items-center gap-0.5 border border-text-gray w-max h-max rounded-full cursor-pointer"
+    [style.background-color]="getChipBgColor(chip)" [style.color]="getChipTextColor(chip)" (click)="selectChip(chip)">
+    <!-- Icon  -->
+     @if(getIsChipSelected(chip)) {
+      <asset-correct [fill]="getChipTextColor(chip)" />
+     } @else {
+      <asset-plus [fill]="getChipTextColor(chip)" />
+     }
+
+    <!-- label  -->
+    {{chip.label}}
+  </div>
+  }
+</div>
