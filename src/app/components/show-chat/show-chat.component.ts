@@ -23,6 +23,10 @@ export class ShowChatComponent {
     return this.user.isOnline ? this.user.onlineColor : this.user.offlineColor
   }
 
+  get userImg() {
+    return this.user.imgSrc;
+  }
+
   chatClick() {
     this.chatClicked.emit();
   }
