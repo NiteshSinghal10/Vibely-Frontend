@@ -58,7 +58,7 @@ export class DropdownComponent {
   }
 
   getIsOptionSelected(option: IOption) {
-    return !!(option.selected) || (this.optionsSelectedByUser.some(selectedOption => selectedOption.value === option.value));
+    return option.selected ? option.selected : this.optionsSelectedByUser.some(selectedOption => selectedOption.value === option.value);
   }
 
   get isMultiSelect() {

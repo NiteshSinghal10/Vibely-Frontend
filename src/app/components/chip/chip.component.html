@@ -6,6 +6,9 @@
   <!-- Cross Icon  -->
   <div class="rounded-lg cursor-pointer" (click)="clickCrossIcon()" [style.background]="crossButtonBgColor"
     (mouseenter)="isHovered = true" (mouseleave)="isHovered = false"  >
-    <asset-cross [height]="crossIconSize.height" [width]="crossIconSize.width" />
+
+    @if(showCrossIcon) {
+      <asset-cross [height]="crossIconSize.height" [width]="crossIconSize.width" />
+    }
   </div>
 </div>

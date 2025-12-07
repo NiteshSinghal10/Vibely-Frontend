@@ -8,4 +8,5 @@ import { Component, Input } from '@angular/core';
 export class CrossAsset {
   @Input() height = '18';
   @Input() width = '18';
+  @Input() fill = '#FF0000';
 }

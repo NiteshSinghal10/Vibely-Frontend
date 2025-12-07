@@ -1,1 +1,15 @@
-<p>subscription-screen works!</p>
+<div class="h-[92vh]">
+  <!-- Heading  -->
+  <div class="flex justify-center items-center text-3xl font-semibold h-[10%]">
+    Choose Your Vibe Plan
+  </div>
+
+  <!-- Plan Details  -->
+  <div class="h-[90%] bg-bg-gray shadow-inner flex justify-center items-center gap-12">
+    @for(subscription of subscriptions; track subscription) {
+      <div class="w-[350px] h-[450px] transition-transform duration-300 ease-in-out hover:scale-105">
+        <app-subscription-card [subscription]="subscription" />
+      </div>
+    }
+  </div>
+</div>

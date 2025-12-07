@@ -33,7 +33,7 @@ export class MultiSelectChipsComponent {
   }
 
   getIsChipSelected(chip: IMultiSelectChipOptions) {
-    return this.selectedChips.some(selectedChip => selectedChip.value === chip.value);
+    return chip.selected ? chip.selected : this.selectedChips.some(selectedChip => selectedChip.value === chip.value);
   }
 
   getChipBgColor(chip: IMultiSelectChipOptions) {

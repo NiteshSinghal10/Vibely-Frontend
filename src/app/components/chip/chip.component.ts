@@ -40,6 +40,10 @@ export class ChipComponent {
     return this.config ? this.config.maxWidth : '200px'
   }
 
+  get showCrossIcon() {
+    return !!(this.config?.crossIcon.show)
+  }
+
   get crossIconSize() {
     const size = this.config ? { width: this.config.crossIcon.width ?? '20', height: this.config.crossIcon.height ?? '20' } : { width: '20', height: '20' }
     return size;

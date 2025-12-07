@@ -3,4 +3,5 @@ export interface IMultiSelectChipOptions {
   value: string;
   bgColor: string;
   textColor: string;
+  selected?: boolean;
 }

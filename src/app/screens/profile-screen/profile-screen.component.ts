@@ -44,10 +44,16 @@ export class ProfileScreenComponent {
     "Podcasts"
   ];
 
-  selectedInterests: IMultiSelectChipOptions[] = []
+  selectedInterests: {label: string, value: string}[] = []
 
   get chips(): IMultiSelectChipOptions[] {
-    return this.interests.map(interest => ({ label: interest, value: interest.toLowerCase(), bgColor: '#DBEAFE', textColor: '#1D4ED8' }))
+    return this.interests.map(interest => ({
+      label: interest,
+      value: interest.toLowerCase(),
+      bgColor: '#DBEAFE',
+      textColor: '#1D4ED8',
+      selected: this.selectedInterests.some(selectedInterest => interest.toLowerCase() === selectedInterest.value)
+    }))
   }
 
   selectInterest(chip: IMultiSelectChipOptions) {
