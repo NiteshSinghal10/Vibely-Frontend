@@ -95,6 +95,6 @@ jobs:
             echo "Removing Old dist"
             rm -r  ~/../../var/www/vib3ly-app/dist/
 
-            echo "Copy dist to var/www/vib3ly-auth/"
+            echo "Copy dist to var/www/vib3ly-app/"
             mv dist/ ~/../../var/www/vib3ly-app/dist/
           EOF
