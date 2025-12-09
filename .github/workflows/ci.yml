@@ -93,7 +93,7 @@ jobs:
             npm run build -- --configuration production
 
             echo "Removing Old dist"
-            rm -r  ~/../../var/www/vib3ly-app/dist
+            rm -r  ~/../../var/www/vib3ly-app/dist/
 
             echo "Copy dist to var/www/vib3ly-app/"
             mv dist/ ~/../../var/www/vib3ly-app/dist/
