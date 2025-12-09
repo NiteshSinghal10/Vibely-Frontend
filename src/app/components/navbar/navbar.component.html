@@ -1,4 +1,4 @@
-<div class="h-[8vh] flex justify-between border-0 rounded-b-lg items-center px-4 bg-background shadow-2xl shadow-light-gray z-10">
+<div class="h-[8vh] flex justify-between border-0 rounded-b-lg items-center px-8 bg-background shadow-2xl shadow-light-gray z-10">
   <!-- Logo & brand name  -->
   <div class="h-full flex items-center gap-2">
     <!-- Logo  -->
@@ -10,6 +10,6 @@
 
   <!-- Profile  -->
   <div class="h-full flex justify-center items-center" appDropdown [options]="options" [config]="config" (selectedOption)="selectedOption($event)" >
-    <img src="profile.png" alt="Profile Image" class="h-10 cursor-pointer">
+    <img src="{{profileImage}}" class="h-10 cursor-pointer rounded-full">
   </div>
 </div>

@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MultiSelectChipsComponent, IMultiSelectChipOptions } from '../../components';
-import { MaleAsset } from '../../assets';
+import { CircleAsset, MaleAsset } from '../../assets';
 import { FemaleAsset } from '../../assets/female';
+import { LocalStorageService } from '../../services';
+import { IUser } from '../../interfaces';
 
 @Component({
   selector: 'app-profile-screen',
-  imports: [MaleAsset, FemaleAsset, MultiSelectChipsComponent],
+  imports: [MaleAsset, FemaleAsset, MultiSelectChipsComponent, CircleAsset, CommonModule],
   templateUrl: './profile-screen.component.html'
 })
 export class ProfileScreenComponent {
@@ -44,6 +47,10 @@ export class ProfileScreenComponent {
     "Podcasts"
   ];
 
+  constructor(
+    private localStorageService: LocalStorageService
+  ) { }
+
   selectedInterests: {label: string, value: string}[] = []
 
   get chips(): IMultiSelectChipOptions[] {
@@ -62,5 +69,15 @@ export class ProfileScreenComponent {
 
   deselectInterest(chip: IMultiSelectChipOptions) {
     this.selectedInterests = this.selectedInterests.filter(selectedInterest => selectedInterest.value !== chip.value);
+  }
+
+  get userProfile() {
+    const user = this.localStorageService.getItem<IUser>('user');
+
+    return user;
+  }
+
+  get userGender() {
+    return this.userProfile?.gender ?? 'NA';
   }
 }

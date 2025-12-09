@@ -1,27 +1,28 @@
 <div class="h-[92vh]">
   <div class="h-1/4 bg-linear-to-t from-primary from-30% to-background flex justify-start items-center gap-8">
     <!-- profile Image  -->
-    <div class="w-max h-max rounded-full overflow-hidden border-4 border-blue shadow-lg shadow-blue ml-16">
-      <img src="https://lh3.googleusercontent.com/a/ACg8ocKUuawnhXl1UWaHhNiqWRjrtARXEOUuRtpcCN9ANPJHD3-c3pL5=s100" alt="Profile Image">
+    <div class="relative w-max h-max rounded-full border-4 border-blue shadow-lg shadow-blue ml-16">
+      <img src="https://lh3.googleusercontent.com/a/ACg8ocKUuawnhXl1UWaHhNiqWRjrtARXEOUuRtpcCN9ANPJHD3-c3pL5=s100" class="rounded-full" >
+      <asset-circle [class]="`absolute bottom-0 right-2`" [width]="'16'" [height]="'16'" [fill]="'#15803D'" />
     </div>
 
     <!-- User Info  -->
     <div>
       <!-- Name  -->
       <div class="text-3xl font-bold">
-        Nitesh Singhal
+        {{userProfile?.firstName}} {{userProfile?.lastName}}
       </div>
 
       <!-- Gender and Country Info  -->
       <div class="flex text-lg justify-start gap-8">
         <div class="flex gap-1 items-center">
-          @if(true) {
+          @if(userGender === 'male') {
             <asset-male [fill]="'#FFFFFF'" />
-          } @else if(false) {
+          } @else if(userGender === 'female') {
             <asset-female [fill]="'#FFFFFF'" />
           }
 
-          <p class="text-white" >Male</p>
+          <p class="text-white" >{{userGender | titlecase}}</p>
         </div>
 
         <div>

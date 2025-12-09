@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { DropdownDirective } from '../../directives';
 import { IDropdownConfig, IOption } from '../dropdown';
+import { LocalStorageService } from '../../services';
+import { IUser } from '../../interfaces';
 
 @Component({
   selector: 'app-navbar',
@@ -10,7 +12,10 @@ import { IDropdownConfig, IOption } from '../dropdown';
 })
 export class NavbarComponent {
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private localStorageService: LocalStorageService
+  ) {}
 
   options: IOption[] = [
     { label: 'Profile', value: 'profile', imgSrc: 'profile-2.svg' },
@@ -35,5 +40,13 @@ export class NavbarComponent {
     this.router.navigate([`/${option.value}`]);
   }
 
+  get userProfile() {
+    const user = this.localStorageService.getItem<IUser>('user');
+    return user;
+  }
+
+  get profileImage() {
+    return this.userProfile ? this.userProfile.picture : 'profile.svg';
+  }
 
 }
