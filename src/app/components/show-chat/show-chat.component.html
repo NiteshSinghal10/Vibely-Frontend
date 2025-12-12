@@ -1,16 +1,34 @@
 <div class="p-2">
-  <div class="cursor-pointer p-2 hover:bg-bg-gray rounded-xl flex items-center gap-2" (click)="chatClick()">
-    <!-- image  -->
-    <div class="relative">
-      <img src="userImg" class="w-13 h-13 rounded-full">
-
-      <asset-circle [class]="'absolute bottom-0 right-0'" [width]="'12'" [height]="'12'" [fill]="color" />
+  <div class="cursor-pointer py-2 px-3 hover:bg-bg-gray  rounded-xl flex items-center" (click)="chatClick()" [class]="isSelected ? 'bg-bg-gray' : ''" >
+    <!-- Image & Name  -->
+    <div class="flex gap-2 w-4/5">
+      <!-- image  -->
+      <div class="relative">
+        <img src="{{userImg}}" class="w-13 h-13 rounded-full">
+    
+        <asset-circle [class]="'absolute bottom-0 right-0'" [width]="'12'" [height]="'12'" [fill]="color" />
+      </div>
+    
+      <!-- Name  -->
+      <div class="w-4/5">
+        <div class="text-lg font-semibold truncate w-full" title="{{user.name}}">{{ user.name }}</div>
+        <div class="text-sm text-gray truncate w-full" title="{{user.subHeading}}">{{ user.subHeading }}</div>
+      </div>
     </div>
+    
+    <!-- Date or new messages count  -->
+    <div class="w-1/5 h-full flex flex-col gap-1" >
+      <div class="w-full h-1/2 text-xs flex justify-end" [class]="newMessagesCount ? 'text-primary' : ''">
+        {{user.lastMessage | relativeDate}}
+      </div>
 
-    <!-- Name  -->
-    <div>
-      <div class="text-lg font-semibold truncate" title="{{user.name}}">{{ user.name }}</div>
-      <div class="text-sm text-gray truncate" title="{{user.subHeading}}">{{ user.subHeading }}</div>
+      <div class="w-full h-1/2 flex justify-end">
+        @if(newMessagesCount) {
+          <div class="px-1.5 py-0.5 w-max text-xs rounded-full text-white" [class]="newMessagesCount ? 'bg-primary' : ''">
+            {{newMessagesCount}}
+          </div>
+        }
+      </div>
     </div>
   </div>
 </div>
