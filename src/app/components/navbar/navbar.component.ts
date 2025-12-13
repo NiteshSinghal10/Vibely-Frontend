@@ -1,21 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { DropdownDirective } from '../../directives';
+import { CommonDirective, DropdownDirective } from '../../directives';
 import { IDropdownConfig, IOption } from '../dropdown';
-import { LocalStorageService } from '../../services';
+import { LocalStorageService, OverlayService } from '../../services';
 import { IUser } from '../../interfaces';
+import { ModalComponent } from '../modal';
 
 @Component({
   selector: 'app-navbar',
   imports: [DropdownDirective],
   templateUrl: './navbar.component.html'
 })
-export class NavbarComponent {
+export class NavbarComponent extends CommonDirective<ModalComponent> {
 
   constructor(
     private router: Router,
-    private localStorageService: LocalStorageService
-  ) {}
+    private localStorageService: LocalStorageService,
+    overlayService: OverlayService,
+    elementRef: ElementRef,
+  ) {
+    super(overlayService, elementRef);
+    this.component = ModalComponent;
+    this.overlayType = 'modal';
+    this.hostLister = false;
+  }
 
   options: IOption[] = [
     { label: 'Profile', value: 'profile', imgSrc: 'profile-2.svg' },
@@ -37,7 +45,11 @@ export class NavbarComponent {
   }
 
   selectedOption(option: IOption) {
-    this.router.navigate([`/${option.value}`]);
+    if(option.value === 'logout') {
+      this.openOverlay();
+    } else {
+      this.router.navigate([`/${option.value}`]);
+    }
   }
 
   get userProfile() {

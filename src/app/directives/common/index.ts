@@ -3,6 +3,7 @@ import { OverlayRef } from '@angular/cdk/overlay';
 
 import { OverlayService } from '../../services';
 
+type TOverlayType = 'modal' | 'dropdown'
 
 @Directive({
   selector: '[appCommon]',
@@ -12,7 +13,7 @@ export class CommonDirective<T> implements OnDestroy {
 
   constructor (
     protected overlayService: OverlayService,
-    protected elementRef: ElementRef
+    protected elementRef: ElementRef,
   ) {
     // Empty Constructor
   }
@@ -20,6 +21,10 @@ export class CommonDirective<T> implements OnDestroy {
   component!: Type<T>;
   overlayRef: OverlayRef | null = null;
   componentRef: ComponentRef<T> | null = null;
+
+  overlayType: TOverlayType = 'dropdown';
+
+  hostLister = true;
 
   ngOnDestroy (): void {
     this.closeOverlay();
@@ -30,23 +35,29 @@ export class CommonDirective<T> implements OnDestroy {
     event.preventDefault();
     event.stopPropagation();
 
+    if(!this.hostLister) {
+      return;
+    }
+
     if (this.overlayRef) {
       this.closeOverlay();
     } else {
-      this.createOverlay();
+      this.createOverlay(this.overlayType);
     }
   }
 
   /**
   * Creates an overlay with the calendar component
   */
-  private createOverlay (): void {
+  private createOverlay (type: TOverlayType): void {
 
     // Create positioned overlay
-    const { overlayRef, componentRef } = this.overlayService.createPositionedOverlay<T>(
+    const { overlayRef, componentRef } = type === 'dropdown' 
+    ? this.overlayService.createPositionedOverlay<T>(
       this.component,
       this.elementRef.nativeElement,
-    );
+    )
+    : this.overlayService.createCenteredOverlay(this.component, { backdropClass: 'backdrop-blur-sm' });
 
     this.overlayRef = overlayRef;
     this.componentRef = componentRef;
@@ -79,6 +90,10 @@ export class CommonDirective<T> implements OnDestroy {
       this.overlayRef = null;
       this.componentRef = null;
     }
+  }
+
+  openOverlay(): void {
+    this.createOverlay(this.overlayType);
   }
 
   injectInput() {

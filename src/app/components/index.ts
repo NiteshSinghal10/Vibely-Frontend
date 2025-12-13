@@ -5,3 +5,5 @@ export * from './selected-chips-component';
 export * from './multi-select-chips';
 export * from './subscription-card';
 export * from './show-chat';
+export * from './chat';
+export * from './modal';

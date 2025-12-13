@@ -1,0 +1,22 @@
+<div class="flex flex-col p-6 rounded-3xl bg-white shadow-2xl" [style.width]="width" [style.height]="height">
+  <!-- title & subtitle -->
+  <div class="flex flex-col gap-1 grow">
+    <!-- title  -->
+     <div class="text-2xl font-semibold">
+      {{modal.title}}
+     </div>
+
+     <!-- subtitle  -->
+      @if(modal.subtitle) {
+        <div class="text-sm text-dark-gray">
+          {{modal.subtitle}}
+        </div>
+      }
+  </div>
+
+  <!-- Buttons  -->
+  <div class="flex justify-between items-center select-none">
+    <button class="cursor-pointer rounded-full px-8 py-1 border font-semibold text-dark-gray" (click)="buttonClicked('negative')">{{modal.negativeBtnText}}</button>
+    <button class="cursor-pointer rounded-full px-8 py-1 font-semibold text-white bg-primary" (click)="buttonClicked('positive')">{{modal.positiveBtnText}}</button>
+  </div>
+</div>

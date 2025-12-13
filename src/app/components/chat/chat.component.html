@@ -1,0 +1,41 @@
+<div class="flex flex-col" [style.width]="width" [style.height]="height">
+  <div class="w-full h-[8%] flex border-b border-light-gray">
+    <!-- img  -->
+    <div class="w-[8%] flex justify-center items-center h-full p-2">
+      <img src="{{selectedUser.imgSrc}}" class="rounded-full w-11 h-11 ">
+    </div>
+
+    <!-- user name  -->
+    <div class="w-[84%] h-full flex items-center text-lg truncate" title="">
+      {{selectedUser.name}}
+    </div>
+
+    <!-- Options Icon  -->
+    <div class="w-[8%] h-full flex justify-center items-center ">
+      <div class="w-max h-max cursor-pointer rounded-full p-2 hover:bg-light-gray " >
+        <asset-three-dot [width]="'20'" [height]="'20'" />
+      </div>
+    </div>
+  </div>
+
+
+  <div class="w-full h-[92%] bg-[url('/chat-bg-1.png')] bg-cover bg-center">
+    <!-- Messages  -->
+    <div class="h-[91%] overflow-y-scroll px-4 flex flex-col gap-3 py-2">
+
+      @for(message of messages; track message._id) {
+      <div class="flex" [class]="myUserId === message._sender ? 'justify-end' : 'justify-start'" >
+        <div class="rounded-xl py-1.5 px-3 w-max max-w-3/5 wrap-break-word shadow-xl" [class]="myUserId === message._sender ? 'bg-primary text-white' : 'bg-white'">
+          {{message.content}}
+        </div>
+      </div>
+      }
+
+    </div>
+
+    <!-- Send message Input  -->
+    <div class="w-full h-[9%] flex justify-center items-start px-8">
+      <input type="text" class="bg-white py-3 px-4 rounded-full w-full outline-none" placeholder="Type a message" >
+    </div>
+</div>
+</div>

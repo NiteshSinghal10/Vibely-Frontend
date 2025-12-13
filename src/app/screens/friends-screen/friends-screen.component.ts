@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { IShowChat, ShowChatComponent } from '../../components';
+import { ChatComponent, IShowChat, ShowChatComponent } from '../../components';
 import { ThreeDotAsset } from '../../assets';
 import { friendMessages, friends } from './dummy';
 
 @Component({
   selector: 'app-friends-screen',
-  imports: [ShowChatComponent, ThreeDotAsset],
+  imports: [ShowChatComponent, ChatComponent],
   templateUrl: './friends-screen.component.html'
 })
 export class FriendsScreenComponent {
