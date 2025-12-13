@@ -61,4 +61,13 @@ export class NavbarComponent extends CommonDirective<ModalComponent> {
     return this.userProfile ? this.userProfile.picture : 'profile.svg';
   }
 
+  override injectOutput(): void {
+    this.componentRef?.instance.negativeBtnClicked.subscribe(() => this.logoutModalButtonClick('negative'));
+    this.componentRef?.instance.positiveBtnClicked.subscribe(() => this.logoutModalButtonClick('positive'));
+  }
+
+  logoutModalButtonClick(type: 'positive' | 'negative') {
+    console.log("-->", type);
+  }
+
 }
