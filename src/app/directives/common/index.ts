@@ -57,7 +57,7 @@ export class CommonDirective<T> implements OnDestroy {
       this.component,
       this.elementRef.nativeElement,
     )
-    : this.overlayService.createCenteredOverlay(this.component, { backdropClass: 'backdrop-blur-sm' });
+    : this.overlayService.createCenteredOverlay(this.component, { backdropClass: 'backdrop-blur-xs' });
 
     this.overlayRef = overlayRef;
     this.componentRef = componentRef;

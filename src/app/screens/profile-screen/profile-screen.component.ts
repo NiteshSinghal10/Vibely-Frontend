@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MultiSelectChipsComponent, IMultiSelectChipOptions } from '../../components';
 import { CircleAsset, MaleAsset } from '../../assets';
 import { FemaleAsset } from '../../assets/female';
-import { LocalStorageService } from '../../services';
+import { IUserLocation, LocalStorageService, LocationService } from '../../services';
 import { IUser } from '../../interfaces';
 
 @Component({
@@ -11,7 +11,7 @@ import { IUser } from '../../interfaces';
   imports: [MaleAsset, FemaleAsset, MultiSelectChipsComponent, CircleAsset, CommonModule],
   templateUrl: './profile-screen.component.html'
 })
-export class ProfileScreenComponent {
+export class ProfileScreenComponent implements OnInit {
 
   private interests = [
     "Football",
@@ -48,10 +48,18 @@ export class ProfileScreenComponent {
   ];
 
   constructor(
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private locationService: LocationService
   ) { }
 
+  ngOnInit(): void {
+    this.locationService.getUserLocation().subscribe((response) => {
+      this.location = response.data;
+    })
+  }
+
   selectedInterests: {label: string, value: string}[] = []
+  location?: IUserLocation;
 
   get chips(): IMultiSelectChipOptions[] {
     return this.interests.map(interest => ({
@@ -61,6 +69,10 @@ export class ProfileScreenComponent {
       textColor: '#1D4ED8',
       selected: this.selectedInterests.some(selectedInterest => interest.toLowerCase() === selectedInterest.value)
     }))
+  }
+
+  get flagLink() {
+    return this.location ? `https://flagcdn.com/${this.location.countryCode.toLowerCase()}.svg` : '';
   }
 
   selectInterest(chip: IMultiSelectChipOptions) {

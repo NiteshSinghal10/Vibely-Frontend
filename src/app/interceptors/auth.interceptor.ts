@@ -21,7 +21,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
           catchError(() => {
             // session invalid → redirect
             window.location.href =
-              `${environment.authServiceUrl}?redirectUrl=${environment.frontendBaseUrl}`;
+              `${environment.authServiceUrl}?redirectUrl=${environment.frontendBaseUrl}&aud=${environment.frontendBaseUrl}`;
             return throwError(() => error);
           })
         )

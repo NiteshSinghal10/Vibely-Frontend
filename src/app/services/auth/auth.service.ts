@@ -17,4 +17,8 @@ export class AuthService {
     const payload = await firstValueFrom(this.networkService.get<{data: {}}>('/auth/api/v1/auth/my-profile'));
     this.localStorageService.setItem('user', payload.data)
   }
+
+  logout() {
+    return this.networkService.put<{data: {}}>('/auth/api/v1/auth/logout', {});
+  }
 }

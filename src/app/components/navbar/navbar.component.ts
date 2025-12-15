@@ -5,6 +5,8 @@ import { IDropdownConfig, IOption } from '../dropdown';
 import { LocalStorageService, OverlayService } from '../../services';
 import { IUser } from '../../interfaces';
 import { ModalComponent } from '../modal';
+import { AuthService } from '../../services';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-navbar',
@@ -16,6 +18,7 @@ export class NavbarComponent extends CommonDirective<ModalComponent> {
   constructor(
     private router: Router,
     private localStorageService: LocalStorageService,
+    private authService: AuthService,
     overlayService: OverlayService,
     elementRef: ElementRef,
   ) {
@@ -67,7 +70,19 @@ export class NavbarComponent extends CommonDirective<ModalComponent> {
   }
 
   logoutModalButtonClick(type: 'positive' | 'negative') {
-    console.log("-->", type);
+    switch(type) {
+      case 'positive':
+        this.authService.logout().subscribe(()=> {
+          this.closeOverlay();
+          window.location.href =
+              `${environment.authServiceUrl}?redirectUrl=${environment.frontendBaseUrl}&aud=${environment.frontendBaseUrl}`;
+        })
+        break;
+      case 'negative':
+        this.closeOverlay()
+        break;
+      default:
+        break;
+    }
   }
-
 }

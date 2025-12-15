@@ -25,9 +25,12 @@
           <p class="text-white" >{{userGender | titlecase}}</p>
         </div>
 
-        <div>
-          <p class="text-white">India</p>
-        </div>
+        @if(location) {
+          <div class="flex items-center gap-2">
+            <img [src]="flagLink" class="w-6 h-6" >
+            <p class="text-white">{{location.country}}</p>
+          </div>
+        }
       </div>
     </div>
   </div>

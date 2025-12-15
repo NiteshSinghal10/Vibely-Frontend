@@ -2,3 +2,5 @@ export * from './overlay';
 export * from './network';
 export * from './country';
 export * from './local-storage';
+export * from './auth';
+export * from './location';
