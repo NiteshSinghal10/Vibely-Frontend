@@ -11,8 +11,8 @@ export class MultiSelectChipsComponent {
   @Input() maxHeight = '300px';
   @Input() minHeight = '200px';
   @Input() width = '500px';
-  @Input() selectedChipBgColor = '#DCFCE7';
-  @Input() selectedChipTextColor = '#15803D';
+  @Input() selectedChipBgColor = '#DBEAFE';
+  @Input() selectedChipTextColor = '#1D4ED8';
   
   @Input() chips: IMultiSelectChipOptions[] = [
     { label: 'Chip 1', value: 'chip-1', bgColor: '#FEE2E2', textColor: '#B91C1C' },

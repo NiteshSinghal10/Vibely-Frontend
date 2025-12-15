@@ -25,10 +25,10 @@
           <p class="text-white" >{{userGender | titlecase}}</p>
         </div>
 
-        @if(location) {
+        @if(isLocationExists) {
           <div class="flex items-center gap-2">
             <img [src]="flagLink" class="w-6 h-6" >
-            <p class="text-white">{{location.country}}</p>
+            <p class="text-white">{{userInfo?.country}}</p>
           </div>
         }
       </div>
@@ -44,7 +44,10 @@
       <app-multi-select-chips [minHeight]="'330px'" [maxHeight]="'330px'" [width]="'100%'" [chips]="chips"
       (selectedChip)="selectInterest($event)" (deselectedChip)="deselectInterest($event)" />
 
-      <button class="cursor-pointer py-1 bg-green border border-gray-100 rounded-full text-white">Update</button>
+      <button class="py-1 border border-gray-100 rounded-full text-white" (click)="updateInterests()"
+      [class]="isInterestsUpdated ? 'bg-primary cursor-pointer' : 'bg-light-gray disabled cursor-not-allowed'"  >
+        Update
+      </button>
      </div>
 
      <!-- Current Plan  -->

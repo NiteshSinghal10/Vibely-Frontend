@@ -5,3 +5,4 @@ export * from './correct';
 export * from './popular-ribbon';
 export * from './circle';
 export * from './three-dot';
+export * from './subscription';

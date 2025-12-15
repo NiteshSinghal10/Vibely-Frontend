@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NetworkService } from '../network';
-import { IUserLocation } from './location.types';
+import { IUserInfo } from './location.types';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +9,12 @@ export class LocationService {
 
   constructor(private networkService: NetworkService) { }
 
-  getUserLocation() {
-    return this.networkService.get<{ data: IUserLocation }>('/vibely/api/v1/location/');
+  getUserInfo() {
+    return this.networkService.get<{ data: IUserInfo }>('/vibely/api/v1/user-info');
+  }
+
+  updateUserInterest(interests: string[]) {
+    return this.networkService.put<{ data: IUserInfo }>('/vibely/api/v1/user-info/interests', { interests })
   }
 
 }
