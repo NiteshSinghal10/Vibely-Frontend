@@ -4,3 +4,4 @@ export * from './country';
 export * from './local-storage';
 export * from './auth';
 export * from './location';
+export * from './friends-requests';

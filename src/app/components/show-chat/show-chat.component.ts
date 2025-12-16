@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CircleAsset } from '../../assets';
 import { IShowChat } from './show-chat.types';
-import { RelativeDatePipe, UtcToLocalPipe } from '../../pipes';
+import { RelativeDatePipe } from '../../pipes';
 
 @Component({
   selector: 'app-show-chat',
