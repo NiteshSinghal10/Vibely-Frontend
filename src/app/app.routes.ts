@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { HomeScreenComponent, ProfileScreenComponent, SettingsComponent, FriendsScreenComponent, SubscriptionScreenComponent } from './screens';
-import { SubscriptionCardComponent, ModalComponent } from './components';
+import { SkeletonLoaderComponent } from './components';
 
 export const routes: Routes = [
   { path: 'home', component: HomeScreenComponent },
@@ -9,5 +9,5 @@ export const routes: Routes = [
   { path: 'chats', component: FriendsScreenComponent },
   { path: 'subscription', component: SubscriptionScreenComponent },
   { path: 'settings', component: SettingsComponent },
-  { path: 'abc', component: SubscriptionCardComponent },
+  { path: 'abc', component: SkeletonLoaderComponent },
 ];

@@ -7,10 +7,19 @@
      </div>
 
      <!-- friends  -->
-      <div class="h-[95%] rounded-xl overflow-y-scroll">
+      <div class="w-full h-[95%] rounded-xl overflow-y-scroll" #friendsScrollableContainer>
         @for(user of users; track user.value) {
           <app-show-chat [user]="user" (chatClicked)="clickChat(user)" />
         }
+
+        @if(isFriendLoading) {
+          <app-show-chat-loader/>
+        }
+
+        <!-- Observer element to observe that user is scrolled till end or not -->
+        <div #friendsElement></div>
+
+        
       </div>
   </div>
 
