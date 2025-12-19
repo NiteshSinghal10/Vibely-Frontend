@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ChatComponent, IShowChat, ShowChatComponent, ShowChatLoaderComponent } from '../../components';
 import { friendMessages } from './dummy';
-import { FriendRequestsService, IFriendRequest } from '../../services';
+import { FriendRequestsService, IFriendRequest, SocketService } from '../../services';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, finalize } from 'rxjs';
 
@@ -25,7 +25,10 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
   @ViewChild('friendsScrollableContainer', { static: false })
   friendsScrollableElement!: ElementRef;
 
-  constructor(private friendRequestsService: FriendRequestsService) {
+  constructor(
+    private friendRequestsService: FriendRequestsService,
+    private socketService: SocketService
+  ) {
     this.searchControl.valueChanges
     .pipe(
       debounceTime(700),
@@ -41,6 +44,7 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
 
   ngOnInit(): void {
     this.getFriendsRequest()
+    this.sendMessage()
   }
 
   ngAfterViewInit(): void {
@@ -109,5 +113,13 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
         this.hasMoreFriends = false;
       }
     });
+  }
+
+  sendMessage() {
+    // this.socketService.emit('sendMessage',{
+    //   _chat: 'sdfs',
+    //   _receiver: '',
+    //   content: ''
+    // })
   }
 }

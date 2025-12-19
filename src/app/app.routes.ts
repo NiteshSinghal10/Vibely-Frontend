@@ -4,7 +4,7 @@ import { HomeScreenComponent, ProfileScreenComponent, SettingsComponent, Friends
 import { SkeletonLoaderComponent } from './components';
 
 export const routes: Routes = [
-  { path: 'home', component: HomeScreenComponent },
+  { path: '', component: HomeScreenComponent },
   { path: 'profile', component: ProfileScreenComponent },
   { path: 'chats', component: FriendsScreenComponent },
   { path: 'subscription', component: SubscriptionScreenComponent },

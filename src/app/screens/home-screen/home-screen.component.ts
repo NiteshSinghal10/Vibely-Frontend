@@ -5,6 +5,7 @@ import { CountryService } from '../../services/country/country.service';
 import { IOption, IDropdownConfig, SelectedChipsComponentComponent, IChip } from '../../components';
 import { PlusAsset } from '../../assets';
 import { TailwindColorPipe } from '../../pipes';
+import { SocketService } from '../../services';
 
 @Component({
   selector: 'app-home-screen',
@@ -16,7 +17,8 @@ export class HomeScreenComponent implements OnInit {
 
   constructor(
     private countryService: CountryService,
-    private tailwindColorPipe: TailwindColorPipe
+    private tailwindColorPipe: TailwindColorPipe,
+    private socketService: SocketService
   ) { }
   
   options: IOption[] = []
