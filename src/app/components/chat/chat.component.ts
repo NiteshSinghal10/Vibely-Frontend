@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { IMessage } from './chat.types';
-import { IShowChat } from '../show-chat';
+import { IChatUser, IMessage } from './chat.types';
 import { SendMessageAsset, ThreeDotAsset } from '../../assets';
 import { FormsModule } from '@angular/forms';
 
@@ -10,7 +9,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './chat.component.html'
 })
 export class ChatComponent {
-  @Input() selectedUser: IShowChat = {
+  @Input() selectedUser: IChatUser = {
     value: 'a',
     name: 'Nitesh',
     imgSrc: 'profile.svg'

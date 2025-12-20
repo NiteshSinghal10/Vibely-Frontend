@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ChatComponent, IMessage, IShowChat, ShowChatComponent, ShowChatLoaderComponent } from '../../components';
-import { FriendRequestsService, IFriendRequest, LocalStorageService, SocketService } from '../../services';
+import { ChatComponent, IChatUser, IMessage, IShowChat, ShowChatComponent, ShowChatLoaderComponent } from '../../components';
+import { FriendService, IFriendRequest, LocalStorageService, SocketService } from '../../services';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, finalize } from 'rxjs';
 import { IUser } from '../../interfaces';
@@ -27,7 +27,7 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
   friendsScrollableElement!: ElementRef;
 
   constructor(
-    private friendRequestsService: FriendRequestsService,
+    private friendService: FriendService,
     private localStorageService: LocalStorageService,
     private socketService: SocketService
   ) {
@@ -78,34 +78,35 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
 
-  friendsRequests: IFriendRequest[] = [];
-  selectedUser?: IShowChat;
+  friends: IUser[] = [];
+  selectedUser?: IUser;
   users: IShowChat[] = []
   messages: IMessage[] = [];
   hasMoreFriends = true;
   isFriendLoading = false;
   
   clickChat(user: IShowChat) {
-    this.selectedUser = user;
+    const friendData = this.friends.find(friend => String(friend._id) === String(user.value));
+    this.selectedUser = friendData;
     this.users = this.users.map(userDetail => (userDetail.value === user.value ? { ...userDetail, isSelected: true } : { ...userDetail, isSelected: false }))
   }
 
   getFriendsRequest() {
     this.isFriendLoading = true;
-    this.friendRequestsService.getFriends(this.search, this.page, this.limit)
+    this.friendService.getFriends(this.search, this.page, this.limit)
     .pipe(
       finalize(() => this.isFriendLoading = false)
     )
     .subscribe(response => {
-      this.friendsRequests = response.data;
+      this.friends = response.data;
 
-      const users = this.friendsRequests.map(friend => ({
-        value: friend.from._id,
-        imgSrc: friend.from.picture ?? this.defautlProfilePicture,
-        name: `${friend.from.firstName} ${friend.from.lastName}`,
+      const users = this.friends.map(friend => ({
+        value: friend._id,
+        imgSrc: friend.picture ?? this.defautlProfilePicture,
+        name: `${friend.firstName} ${friend.lastName}`,
         isOnline: true,
         subHeading: this.subheading,
-        isSelected: !!(this.selectedUser?.value === friend.from._id)
+        isSelected: !!(String(this.selectedUser?._id) === String(friend._id))
       }));
 
       this.users = [ ...this.users, ...users ];
@@ -122,10 +123,18 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
     return user;
   }
 
+  get selectedUserData(): IChatUser {
+    return {
+      value: this.selectedUser?._id || '',
+      imgSrc: this.selectedUser?.picture || this.defautlProfilePicture,
+      name: `${this.selectedUser?.firstName} ${this.selectedUser?.lastName}`
+    }
+  }
+
   sendMessage(message: string) {
     this.socketService.emit('sendMessage',{
-      chatId: generateChatId(this.selectedUser?.value || '', this.myUserDetail?._id || ''),
-      _receiver: this.selectedUser?.value || '',
+      chatId: generateChatId(this.selectedUser?._id || '', this.myUserDetail?._id || ''),
+      _receiver: this.selectedUser?._id || '',
       content: message
     })
   }

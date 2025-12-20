@@ -24,7 +24,7 @@
   <!-- Chat window  -->
   <div class="w-[70%] h-full">
     @if(selectedUser) {
-      <app-chat [messages]="messages" [myUserId]="myUserDetail?._id || ''" [selectedUser]="selectedUser" (sendMessage)="sendMessage($event)" />
+      <app-chat [messages]="messages" [myUserId]="myUserDetail?._id || ''" [selectedUser]="selectedUserData" (sendMessage)="sendMessage($event)" />
     }
   </div>
 </div>
