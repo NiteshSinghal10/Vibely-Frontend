@@ -2,7 +2,7 @@ import { IUser } from "../../interfaces";
 
 export interface IFriendRequest {
   _id: string;
-  from: string;
-  to: IUser;
+  from: IUser;
+  to: string;
   status: "PENDING" | "ACCEPTED" | "REJECTED";
 }

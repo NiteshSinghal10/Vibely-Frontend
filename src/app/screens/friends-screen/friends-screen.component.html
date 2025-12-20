@@ -18,15 +18,13 @@
 
         <!-- Observer element to observe that user is scrolled till end or not -->
         <div #friendsElement></div>
-
-        
       </div>
   </div>
 
   <!-- Chat window  -->
   <div class="w-[70%] h-full">
     @if(selectedUser) {
-      <app-chat [messages]="messages" [myUserId]="'b'" [selectedUser]="selectedUser" />
+      <app-chat [messages]="messages" [myUserId]="myUserDetail?._id || ''" [selectedUser]="selectedUser" (sendMessage)="sendMessage($event)" />
     }
   </div>
 </div>

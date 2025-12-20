@@ -34,8 +34,9 @@
     </div>
 
     <!-- Send message Input  -->
-    <div class="w-full h-[9%] flex justify-center items-start px-8">
-      <input type="text" class="bg-white py-3 px-4 rounded-full w-full outline-none" placeholder="Type a message" >
+    <div class="relative w-full h-[9%] flex justify-center items-start px-8">
+      <input type="text" class="bg-white py-3 px-4 rounded-full w-full outline-none" placeholder="Type a message" [(ngModel)]="message" />
+      <asset-send-message [height]="'35px'" [width]="'35px'" [class]="'align-middle p-1 rounded-full absolute right-12 top-1.5 cursor-pointer hover:bg-bg-gray'" [fill]="'#3A9DFF'" (click)="messageSend()" />
     </div>
 </div>
 </div>

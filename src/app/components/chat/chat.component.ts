@@ -1,11 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { IMessage } from './chat.types';
 import { IShowChat } from '../show-chat';
-import { ThreeDotAsset } from '../../assets';
+import { SendMessageAsset, ThreeDotAsset } from '../../assets';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-chat',
-  imports: [ThreeDotAsset],
+  imports: [ThreeDotAsset, SendMessageAsset, FormsModule],
   templateUrl: './chat.component.html'
 })
 export class ChatComponent {
@@ -22,4 +23,13 @@ export class ChatComponent {
   @Input() height = '100%';
 
   @Input() messages: IMessage[] = [];
+
+  message = '';
+
+  @Output() sendMessage = new EventEmitter<string>();
+
+  messageSend() {
+    this.sendMessage.emit(this.message);
+    this.message = '';
+  }
 }

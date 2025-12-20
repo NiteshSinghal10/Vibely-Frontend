@@ -1,6 +1,5 @@
-export interface ISentMessageData {
-  _receiver: string;
-  _chat: string;
-  _message: string;
-}
+import { IMessage } from "../../../components";
 
+export interface ISentMessageData extends IMessage {
+  
+}
