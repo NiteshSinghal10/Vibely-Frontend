@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ChatComponent, IChatUser, IMessage, IShowChat, ShowChatComponent, ShowChatLoaderComponent } from '../../components';
-import { FriendService, IFriendRequest, LocalStorageService, SocketService } from '../../services';
+import { ChatComponent, FriendMessages, IChatUser, IMessage, IShowChat, ShowChatComponent, ShowChatLoaderComponent } from '../../components';
+import { FriendService, IFriendRequest, LocalStorageService, MessageService, SocketService } from '../../services';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, finalize } from 'rxjs';
 import { IUser } from '../../interfaces';
@@ -13,7 +13,8 @@ import { generateChatId } from '../../common-methods';
 })
 export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy {
   private page = 1;
-  private limit = 10
+  private limit = 10;
+  private messagePage = 1;
   private search: string | null = '';
 
   private friendsObserver!: IntersectionObserver;
@@ -29,7 +30,8 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
   constructor(
     private friendService: FriendService,
     private localStorageService: LocalStorageService,
-    private socketService: SocketService
+    private socketService: SocketService,
+    private messageService: MessageService
   ) {
     this.searchControl.valueChanges
     .pipe(
@@ -42,11 +44,37 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
     });
   }
 
+  private groupMessages (rawMessages: IMessage[]) {
+    const groupedMessages: Record<string, IMessage[]> = {};
+    
+    rawMessages.forEach(message => {
+      const date = new Date(message.createdAt);
+      const dateStr = date.toLocaleDateString('hi-IN');
+  
+      const [day, month, year] = dateStr.split('/').map(Number);
+  
+      const key = `${year}-${month}-${day}T00:00:00.000+00:00`;
+    
+      if (!groupedMessages[key]) {
+        groupedMessages[key] = [];
+      }
+    
+      groupedMessages[key].push(message);
+    })
+  
+    const groupedArray = Object.keys(groupedMessages).map(dateStr => ({
+        date: dateStr,
+        messages: groupedMessages[dateStr]
+      }));
+  
+    return groupedArray;
+  }
+
   searchControl = new FormControl('');
 
   ngOnInit(): void {
     this.getFriendsRequest()
-    this.receiveMessage();
+    // this.receiveMessage();
   }
 
   ngAfterViewInit(): void {
@@ -81,14 +109,15 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
   friends: IUser[] = [];
   selectedUser?: IUser;
   users: IShowChat[] = []
-  messages: IMessage[] = [];
+  messages: FriendMessages[] = [];
   hasMoreFriends = true;
   isFriendLoading = false;
   
   clickChat(user: IShowChat) {
     const friendData = this.friends.find(friend => String(friend._id) === String(user.value));
     this.selectedUser = friendData;
-    this.users = this.users.map(userDetail => (userDetail.value === user.value ? { ...userDetail, isSelected: true } : { ...userDetail, isSelected: false }))
+    this.getMessagesData();
+    this.users = this.users.map(userDetail => (userDetail.value === user.value ? { ...userDetail, isSelected: true } : { ...userDetail, isSelected: false }));
   }
 
   getFriendsRequest() {
@@ -104,7 +133,7 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
         value: friend._id,
         imgSrc: friend.picture ?? this.defautlProfilePicture,
         name: `${friend.firstName} ${friend.lastName}`,
-        isOnline: true,
+        isOnline: friend.isOnline,
         subHeading: this.subheading,
         isSelected: !!(String(this.selectedUser?._id) === String(friend._id))
       }));
@@ -131,6 +160,14 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
 
+  getMessagesData() {
+    if(this.selectedUser) {
+      this.messageService.getMessages(this.selectedUser?._id || '', this.messagePage).subscribe(data => {
+        this.messages = [...this.messages, ...this.groupMessages(data.data)]
+      })
+    }
+  }
+
   sendMessage(message: string) {
     this.socketService.emit('sendMessage',{
       chatId: generateChatId(this.selectedUser?._id || '', this.myUserDetail?._id || ''),
@@ -139,9 +176,9 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
     })
   }
 
-  receiveMessage() {
-    this.socketService.on('sentMessage').subscribe(message => {
-      this.messages.push(message)
-    })
-  }
+  // receiveMessage() {
+  //   this.socketService.on('sentMessage').subscribe(message => {
+  //     this.messages.push(message)
+  //   })
+  // }
 }

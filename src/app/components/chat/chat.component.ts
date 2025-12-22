@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { IChatUser, IMessage } from './chat.types';
+import { IChatUser, FriendMessages } from './chat.types';
 import { SendMessageAsset, ThreeDotAsset } from '../../assets';
 import { FormsModule } from '@angular/forms';
+import { RelativeDatePipe, TimePipe } from '../../pipes';
 
 @Component({
   selector: 'app-chat',
-  imports: [ThreeDotAsset, SendMessageAsset, FormsModule],
+  imports: [ThreeDotAsset, SendMessageAsset, FormsModule, RelativeDatePipe, TimePipe],
   templateUrl: './chat.component.html'
 })
 export class ChatComponent {
@@ -21,7 +22,7 @@ export class ChatComponent {
 
   @Input() height = '100%';
 
-  @Input() messages: IMessage[] = [];
+  @Input() messages: FriendMessages[] = [];
 
   message = '';
 

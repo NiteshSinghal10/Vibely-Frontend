@@ -10,4 +10,5 @@ export interface IUser {
     day: number;
   };
   gender?: string;
+  isOnline?: boolean
 }

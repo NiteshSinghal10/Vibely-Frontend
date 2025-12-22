@@ -7,3 +7,4 @@ export * from './location';
 export * from './friends-requests';
 export * from './socket';
 export * from './friend';
+export * from './message';

@@ -23,12 +23,21 @@
     <!-- Messages  -->
     <div class="h-[91%] overflow-y-scroll px-4 flex flex-col gap-3 py-2">
 
-      @for(message of messages; track message._id) {
-      <div class="flex" [class]="myUserId === message._sender ? 'justify-end' : 'justify-start'" >
-        <div class="rounded-xl py-1.5 px-3 w-max max-w-3/5 wrap-break-word shadow-xl" [class]="myUserId === message._sender ? 'bg-primary text-white' : 'bg-white'">
-          {{message.content}}
+      @for(singleDayMessages of messages; track singleDayMessages.date) {
+        <div class="flex flex-col w-full items-center">
+          <div class="bg-white px-1.5 py-0.5 text-xs rounded-lg w-max text-dark-gray" >{{singleDayMessages.date | relativeDate}}</div>
         </div>
-      </div>
+
+        @for(message of singleDayMessages.messages; track message._id) {
+          <div class="flex" [class]="myUserId === message._sender ? 'justify-end' : 'justify-start'" >
+            <div class="flex gap-3 rounded-xl py-1.5 px-3 w-max max-w-3/5 wrap-break-word shadow-xl" [class]="myUserId === message._sender ? 'bg-primary text-white' : 'bg-white'">
+              {{message.content}}
+              <div class="flex text-xs w-max items-end" [class]="myUserId === message._sender ? 'text-white' : 'text-dark-gray'">
+                {{message.createdAt | time}}
+              </div>
+            </div>
+          </div>
+        }
       }
 
     </div>

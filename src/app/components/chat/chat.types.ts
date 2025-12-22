@@ -2,11 +2,15 @@
 
 export interface IMessage {
   _id: string;
-  chatId: string;
   _sender: string;
   _receiver: string;
+  createdAt: string; // ISO date string
   content: string;
-  createdAt: Date | string;
+}
+
+export interface FriendMessages {
+  date: string; // format: DD-MM-YYYY
+  messages: IMessage[];
 }
 
 export interface IChatUser {

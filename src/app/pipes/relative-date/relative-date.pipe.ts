@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class RelativeDatePipe implements PipeTransform {
 
-  transform(value: Date | string | undefined): string {
+  transform(value: Date | string | undefined, type: 'DATE' | 'TIME' = 'DATE', format?: Intl.DateTimeFormatOptions): string {
 
     if(!value) {
       return '';
@@ -23,11 +23,15 @@ export class RelativeDatePipe implements PipeTransform {
 
     // If date is today → return only time
     if (diffDays === 0) {
-      return new Intl.DateTimeFormat('en-US', {
-        hour: 'numeric',
-        minute: 'numeric',
-        hour12: true
-      }).format(date);
+      if(type === 'DATE') {
+         return 'Today';
+      } else {
+        return new Intl.DateTimeFormat('en-US', {
+          hour: 'numeric',
+          minute: 'numeric',
+          hour12: true
+        }).format(date);
+      }
     }
 
     // Yesterday
@@ -43,7 +47,7 @@ export class RelativeDatePipe implements PipeTransform {
     }
 
     // Otherwise, return normal date
-    return new Intl.DateTimeFormat('en-US', {
+    return new Intl.DateTimeFormat('en-US', format || {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric'
