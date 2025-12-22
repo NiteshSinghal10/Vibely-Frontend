@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ChatComponent, FriendMessages, IChatUser, IMessage, IShowChat, ShowChatComponent, ShowChatLoaderComponent } from '../../components';
-import { FriendService, IFriendRequest, LocalStorageService, MessageService, SocketService } from '../../services';
+import { FriendService, LocalStorageService, MessageService, SocketService } from '../../services';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, finalize } from 'rxjs';
 import { IUser } from '../../interfaces';
@@ -18,6 +18,7 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
   private search: string | null = '';
 
   private friendsObserver!: IntersectionObserver;
+  private _selectedUser?: IUser;
 
   private subheading = 'Tap to start chatting';
   private defautlProfilePicture = 'profile.svg';
@@ -46,7 +47,7 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
 
   private groupMessages (rawMessages: IMessage[]) {
     const groupedMessages: Record<string, IMessage[]> = {};
-    
+
     rawMessages.forEach(message => {
       const date = new Date(message.createdAt);
       const dateStr = date.toLocaleDateString('hi-IN');
@@ -74,7 +75,7 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
 
   ngOnInit(): void {
     this.getFriendsRequest()
-    // this.receiveMessage();
+    this.receiveMessage();
   }
 
   ngAfterViewInit(): void {
@@ -107,7 +108,6 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   friends: IUser[] = [];
-  selectedUser?: IUser;
   users: IShowChat[] = []
   messages: FriendMessages[] = [];
   hasMoreFriends = true;
@@ -116,7 +116,6 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
   clickChat(user: IShowChat) {
     const friendData = this.friends.find(friend => String(friend._id) === String(user.value));
     this.selectedUser = friendData;
-    this.getMessagesData();
     this.users = this.users.map(userDetail => (userDetail.value === user.value ? { ...userDetail, isSelected: true } : { ...userDetail, isSelected: false }));
   }
 
@@ -152,6 +151,18 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
     return user;
   }
 
+  get selectedUser(): IUser | undefined {
+    return this._selectedUser;
+  }
+  
+  set selectedUser(user: IUser | undefined) {
+    this._selectedUser = user;
+  
+    this.messages = [];
+    this.messagePage = 1;
+    this.getMessagesData();
+  }
+
   get selectedUserData(): IChatUser {
     return {
       value: this.selectedUser?._id || '',
@@ -176,9 +187,17 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
     })
   }
 
-  // receiveMessage() {
-  //   this.socketService.on('sentMessage').subscribe(message => {
-  //     this.messages.push(message)
-  //   })
-  // }
+  receiveMessage() {
+    this.socketService.on('sentMessage').subscribe(message => {
+      const messageWithDate = this.groupMessages([message]);
+
+      const messageIndex = this.messages.findIndex(messageDate => messageDate.date === messageWithDate[0].date);
+
+      if(messageIndex !== -1) {
+        this.messages[messageIndex].messages = [message, ...this.messages[messageIndex].messages]
+      } else {
+        this.messages = [...messageWithDate, ...this.messages];
+      }
+    })
+  }
 }

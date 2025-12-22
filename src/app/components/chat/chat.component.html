@@ -21,23 +21,38 @@
 
   <div class="w-full h-[92%] bg-[url('/chat-bg-1.png')] bg-cover bg-center">
     <!-- Messages  -->
-    <div class="h-[91%] overflow-y-scroll px-4 flex flex-col gap-3 py-2">
+    <div class="h-[91%] overflow-y-scroll px-4 flex flex-col-reverse gap-3 py-2">
 
       @for(singleDayMessages of messages; track singleDayMessages.date) {
-        <div class="flex flex-col w-full items-center">
-          <div class="bg-white px-1.5 py-0.5 text-xs rounded-lg w-max text-dark-gray" >{{singleDayMessages.date | relativeDate}}</div>
-        </div>
-
         @for(message of singleDayMessages.messages; track message._id) {
           <div class="flex" [class]="myUserId === message._sender ? 'justify-end' : 'justify-start'" >
-            <div class="flex gap-3 rounded-xl py-1.5 px-3 w-max max-w-3/5 wrap-break-word shadow-xl" [class]="myUserId === message._sender ? 'bg-primary text-white' : 'bg-white'">
-              {{message.content}}
-              <div class="flex text-xs w-max items-end" [class]="myUserId === message._sender ? 'text-white' : 'text-dark-gray'">
-                {{message.createdAt | time}}
-              </div>
+            <div class="relative group flex gap-3  rounded-xl py-1.5 px-3 w-max max-w-3/5 wrap-break-word shadow-xl" [class]="myUserId === message._sender ? 'bg-primary text-white' : 'bg-white'">
+              <!-- message  -->
+              <p class="relative">
+                {{message.content}}
+              
+                <!-- dummy date span  -->
+                <span class="opacity-0 text-[10px]">
+                  {{message.createdAt | time}}
+                </span>
+
+                <!-- original date span  -->
+                <span class="absolute bottom-0 right-0 leading-none inline-flex items-end ml-2 text-[10px] text-gray-600"
+                  [class]="myUserId === message._sender ? 'text-white' : 'text-dark-gray'">
+                  {{message.createdAt | time}}
+                </span>
+              </p>
+
+              <!-- options arrow  -->
+              <asset-down-arrow class="absolute top-0.5 right-0.5 hidden cursor-pointer rounded-full group-hover:block" [fill]="myUserId === message._sender ? '#FFFFFF' : '#757575'"
+              [height]="'25px'" [width]="'25px'" [class]="myUserId === message._sender ? 'bg-primary' : 'bg-white'" />
             </div>
           </div>
         }
+
+        <div class="flex flex-col w-full items-center">
+          <div class="bg-white px-1.5 py-0.5 text-xs rounded-lg w-max text-dark-gray" >{{singleDayMessages.date | relativeDate}}</div>
+        </div>
       }
 
     </div>

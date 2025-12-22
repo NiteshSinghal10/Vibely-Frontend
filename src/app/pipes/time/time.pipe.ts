@@ -23,8 +23,8 @@ export class TimePipe implements PipeTransform {
     }
 
     const options: Intl.DateTimeFormatOptions = {
-      hour: '2-digit',
-      minute: '2-digit',
+      hour: 'numeric',
+      minute: 'numeric',
       second: showSeconds ? '2-digit' : undefined,
       hour12: format === '12'
     };

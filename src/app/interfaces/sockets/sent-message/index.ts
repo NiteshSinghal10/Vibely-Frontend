@@ -1,5 +1,5 @@
-// import { IMessage } from "../../../components";
+import { IMessage } from "../../../components";
 
-export interface ISentMessageData  {
+export interface ISentMessageData extends IMessage  {
   
 }
