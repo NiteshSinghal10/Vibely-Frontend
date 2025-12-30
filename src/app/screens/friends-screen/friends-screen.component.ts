@@ -15,6 +15,7 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
   private page = 1;
   private limit = 10;
   private messagePage = 1;
+  private messageLimit = 30;
   private search: string | null = '';
 
   private friendsObserver!: IntersectionObserver;
@@ -112,6 +113,8 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
   messages: FriendMessages[] = [];
   hasMoreFriends = true;
   isFriendLoading = false;
+  hasMessageMore = true;
+  isMessageLoading = false;
   
   clickChat(user: IShowChat) {
     const friendData = this.friends.find(friend => String(friend._id) === String(user.value));
@@ -173,8 +176,19 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
 
   getMessagesData() {
     if(this.selectedUser) {
-      this.messageService.getMessages(this.selectedUser?._id || '', this.messagePage).subscribe(data => {
-        this.messages = [...this.messages, ...this.groupMessages(data.data)]
+      // start loader
+      this.isMessageLoading = true;
+
+      this.messageService.getMessages(this.selectedUser?._id || '', this.messagePage, this.messageLimit)
+      .pipe(
+        finalize(() => this.isMessageLoading = false)
+      )
+      .subscribe(data => {
+        this.messages = [...this.messages, ...this.groupMessages(data.data)];
+
+        if(data.data.length === 0 || data.data.length < this.messageLimit) {
+          this.hasMessageMore = false;
+        }
       })
     }
   }
@@ -199,5 +213,14 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
         this.messages = [...messageWithDate, ...this.messages];
       }
     })
+  }
+
+  loadMoreMessages() {
+    this.messagePage = this.messagePage + 1;
+    this.getMessagesData();
+  }
+
+  deleteMessage(message: IMessage) {
+    console.log(message)
   }
 }

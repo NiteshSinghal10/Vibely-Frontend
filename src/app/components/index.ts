@@ -9,3 +9,4 @@ export * from './chat';
 export * from './modal';
 export * from './skeleton-loader';
 export * from './show-chat-loader';
+export * from './chat-loader';

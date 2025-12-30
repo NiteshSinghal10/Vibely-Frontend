@@ -21,12 +21,12 @@
 
   <div class="w-full h-[92%] bg-[url('/chat-bg-1.png')] bg-cover bg-center">
     <!-- Messages  -->
-    <div class="h-[91%] overflow-y-scroll px-4 flex flex-col-reverse gap-3 py-2">
+    <div class="h-[91%] overflow-y-scroll px-4 flex flex-col-reverse gap-3 py-2" #messagesScrollableContainer>
 
-      @for(singleDayMessages of messages; track singleDayMessages.date) {
+      @for(singleDayMessages of messages; track $index) {
         @for(message of singleDayMessages.messages; track message._id) {
           <div class="flex" [class]="myUserId === message._sender ? 'justify-end' : 'justify-start'" >
-            <div class="relative group flex gap-3  rounded-xl py-1.5 px-3 w-max max-w-3/5 wrap-break-word shadow-xl" [class]="myUserId === message._sender ? 'bg-primary text-white' : 'bg-white'">
+            <div class="relative group flex gap-3  rounded-xl py-1.5 pl-3 w-max max-w-3/5 wrap-break-word shadow-xl" [class]="myUserId === message._sender ? 'bg-primary text-white' : 'bg-white'">
               <!-- message  -->
               <p class="relative">
                 {{message.content}}
@@ -44,8 +44,10 @@
               </p>
 
               <!-- options arrow  -->
-              <asset-down-arrow class="absolute top-0.5 right-0.5 hidden cursor-pointer rounded-full group-hover:block" [fill]="myUserId === message._sender ? '#FFFFFF' : '#757575'"
-              [height]="'25px'" [width]="'25px'" [class]="myUserId === message._sender ? 'bg-primary' : 'bg-white'" />
+               <div appDropdown [options]="options" [config]="config" (selectedOption)="selectedOption($event, message)" >
+                  <asset-down-arrow class="absolute top-0.5 right-0.5 hidden cursor-pointer rounded-full group-hover:block" [fill]="myUserId === message._sender ? '#FFFFFF' : '#757575'"
+                   [height]="'25px'" [width]="'25px'" [class]="myUserId === message._sender ? 'bg-primary' : 'bg-white'" />
+               </div>
             </div>
           </div>
         }
@@ -55,6 +57,12 @@
         </div>
       }
 
+      @if(isLoading) {
+        <app-chat-loader />
+      }
+      
+      <!-- Observer element to observe that user is scrolled till end or not  -->
+      <div #messagesElement></div>
     </div>
 
     <!-- Send message Input  -->

@@ -24,7 +24,8 @@
   <!-- Chat window  -->
   <div class="w-[70%] h-full">
     @if(selectedUser) {
-      <app-chat [messages]="messages" [myUserId]="myUserDetail?._id || ''" [selectedUser]="selectedUserData" (sendMessage)="sendMessage($event)" />
+      <app-chat [messages]="messages" [myUserId]="myUserDetail?._id || ''" [selectedUser]="selectedUserData" (sendMessage)="sendMessage($event)"
+      [hasMore]="hasMessageMore" [isLoading]="isMessageLoading" (loadMore)="loadMoreMessages()" (deleteMessage)="deleteMessage($event)" />
     }
   </div>
 </div>
