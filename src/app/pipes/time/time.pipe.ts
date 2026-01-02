@@ -9,7 +9,7 @@ export class TimePipe implements PipeTransform {
     value: Date | string | undefined,
     format: '12' | '24' = '12',
     showSeconds: boolean = false,
-    locale: string = 'en-US'
+    locale: string = 'hi-IN'
   ): string {
 
     if (!value) {

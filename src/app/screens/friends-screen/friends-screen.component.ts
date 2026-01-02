@@ -55,7 +55,7 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
   
       const [day, month, year] = dateStr.split('/').map(Number);
   
-      const key = `${year}-${month}-${day}T00:00:00.000+00:00`;
+      const key = `${year.toString().padStart(2, '0')}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}T00:00:00.000+00:00`;
     
       if (!groupedMessages[key]) {
         groupedMessages[key] = [];

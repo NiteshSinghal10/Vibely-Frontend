@@ -47,7 +47,7 @@ export class RelativeDatePipe implements PipeTransform {
     }
 
     // Otherwise, return normal date
-    return new Intl.DateTimeFormat('en-US', format || {
+    return new Intl.DateTimeFormat('hi-IN', format || {
       day: '2-digit',
       month: '2-digit',
       year: 'numeric'
