@@ -78,6 +78,7 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
     this.getFriendsRequest()
     this.receiveMessage();
     this.messageDeleted();
+    this.messageEdited();
   }
 
   ngAfterViewInit(): void {
@@ -231,9 +232,36 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
     .filter(groupMessage => groupMessage.messages.length > 0);
   }
 
+  updateMessageFromList (message: IMessage) {
+    this.messages = this.messages
+    .map(groupMessage => {
+      const messages = groupMessage.messages.map(messageData => {
+        if(messageData._id.toString() === message._id.toString()) {
+          return {
+            ...messageData,
+            content: message.content
+          }
+        }
+
+        return messageData;
+      })
+
+      return {
+        ...groupMessage,
+        messages
+      };
+    });
+  }
+
   messageDeleted() {
     this.socketService.on('messageDeleted').subscribe(message => {
       this.removeMessageFromListing(message._id)
+    })
+  }
+
+  messageEdited() {
+    this.socketService.on('messageEdited').subscribe(message => {
+      this.updateMessageFromList(message);
     })
   }
 
@@ -245,5 +273,10 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
   deleteMessage(_id: string) {
     this.socketService.emit("deleteMessage", { _id });
     this.removeMessageFromListing(_id)
+  }
+
+  editMessage(message: IMessage) {
+    this.socketService.emit("editMessage", message);
+    this.updateMessageFromList(message);
   }
 }
