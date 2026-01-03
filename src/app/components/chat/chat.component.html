@@ -19,13 +19,13 @@
   </div>
 
 
-  <div class="w-full h-[92%] bg-[url('/chat-bg-1.png')] bg-cover bg-center">
+  <div class="w-full h-[92%] bg-[url('/chat-bg-1.png')] bg-cover bg-center flex flex-col">
     <!-- Messages  -->
-    <div class="h-[91%] overflow-y-scroll px-4 flex flex-col-reverse gap-3 py-2" #messagesScrollableContainer>
+    <div class="overflow-auto px-4 flex grow flex-col-reverse gap-3 py-2" #messagesScrollableContainer>
 
       @for(singleDayMessages of messages; track $index) {
         @for(message of singleDayMessages.messages; track message._id) {
-          <div class="flex" [class]="myUserId === message._sender ? 'justify-end' : 'justify-start'" >
+          <div class="flex" [class]="myUserId === message._sender ? 'justify-end' : 'justify-start'" [attr.id]="'msg-' + message._id" >
             <div class="relative group flex gap-3  rounded-xl py-1.5 pl-3 w-max max-w-3/5 wrap-break-word shadow-xl" [class]="myUserId === message._sender ? 'bg-primary text-white' : 'bg-white'">
               <!-- message  -->
               <p class="relative">
@@ -44,7 +44,7 @@
               </p>
 
               <!-- options arrow  -->
-               <div appDropdown [options]="options" [config]="config" (selectedOption)="selectedOption($event, message)" >
+               <div appDropdown [options]="getMessageOptions(message._sender)" [config]="config" (selectedOption)="selectedOption($event, message)" >
                   <asset-down-arrow class="absolute top-0.5 right-0.5 hidden cursor-pointer rounded-full group-hover:block" [fill]="myUserId === message._sender ? '#FFFFFF' : '#757575'"
                    [height]="'25px'" [width]="'25px'" [class]="myUserId === message._sender ? 'bg-primary' : 'bg-white'" />
                </div>
@@ -65,10 +65,20 @@
       <div #messagesElement></div>
     </div>
 
-    <!-- Send message Input  -->
-    <div class="relative w-full h-[9%] flex justify-center items-start px-8">
-      <input type="text" class="bg-white py-3 px-4 rounded-full w-full outline-none" placeholder="Type a message" [(ngModel)]="message" />
-      <asset-send-message [height]="'35px'" [width]="'35px'" [class]="'align-middle p-1 rounded-full absolute right-12 top-1.5 cursor-pointer hover:bg-bg-gray'" [fill]="'#3A9DFF'" (click)="messageSend()" />
+    @if(editMessageData) {
+    <!-- show edit message  -->
+    <div class="pt-1.5 px-12 text-sm w-full font-semibold  bg-bg-blue flex justify-between items-center">
+      <p>Edit Message</p>
+      <div class="cursor-pointer p-1.5 rounded-full hover:bg-light-gray" (click)="messageEditCancel()">
+        <asset-cross [height]="`12`" [width]="`12`" [fill]="`#757575`"/>
+      </div>
     </div>
-</div>
+    }
+
+    <!-- Send message Input  -->
+    <div class="relative w-full px-8 py-2 flex items-center bg-bg-blue ">
+      <input type="text" class="bg-white py-3 px-4 pr-13 rounded-full w-full outline-none " placeholder="Type a message" [(ngModel)]="message" />
+      <asset-send-message [height]="'35px'" [width]="'35px'" [class]="'align-middle p-1 rounded-full absolute right-12 top-3.5 cursor-pointer hover:bg-bg-gray'" [fill]="'#3A9DFF'" (click)="messageSend()" />
+    </div>
+  </div>
 </div>

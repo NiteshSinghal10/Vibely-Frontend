@@ -1,7 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { IChatUser, FriendMessages, IMessage } from './chat.types';
-import { DownArrowAsset, SendMessageAsset, ThreeDotAsset } from '../../assets';
+import { CrossAsset, DownArrowAsset, SendMessageAsset, ThreeDotAsset } from '../../assets';
 import { FormsModule } from '@angular/forms';
 import { RelativeDatePipe, TimePipe } from '../../pipes';
 import { CommonDirective, DropdownDirective } from '../../directives';
@@ -12,7 +12,7 @@ import { OverlayService } from '../../services';
 
 @Component({
   selector: 'app-chat',
-  imports: [ThreeDotAsset, SendMessageAsset, FormsModule, RelativeDatePipe, TimePipe, DownArrowAsset, DropdownDirective, ChatLoaderComponent],
+  imports: [ThreeDotAsset, SendMessageAsset, FormsModule, RelativeDatePipe, TimePipe, DownArrowAsset, DropdownDirective, ChatLoaderComponent, CrossAsset],
   templateUrl: './chat.component.html'
 })
 export class ChatComponent extends CommonDirective<ModalComponent> {
@@ -53,6 +53,8 @@ export class ChatComponent extends CommonDirective<ModalComponent> {
 
   @Output() deleteMessage = new EventEmitter<IMessage>();
 
+  @Output() editMessage = new EventEmitter<IMessage>();
+
   @ViewChild('messagesElement', { static: false }) messagesElement!: ElementRef;
 
   @ViewChild('messagesScrollableContainer', { static: false }) messagesScrollableElement!: ElementRef;
@@ -90,13 +92,6 @@ export class ChatComponent extends CommonDirective<ModalComponent> {
     );
   }
 
-  options: IOption[] = [
-    { label: 'Reply', value: 'reply' },
-    { label: 'Copy', value: 'copy' },
-    { label: 'Edit', value: 'edit' },
-    { label: 'Delete', value: 'delete' }
-  ];
-
   config?: IDropdownConfig = {
     textSize: '14px',
     textColor: '#636363',
@@ -106,11 +101,35 @@ export class ChatComponent extends CommonDirective<ModalComponent> {
     optionPrefix: false
   }
 
+  editMessageData: IMessage | undefined;
+
   messageSend() {
-    if(this.message) {
+    if(this.message && !this.editMessageData) {
       this.sendMessage.emit(this.message);
       this.message = '';
+    } else if(this.message && this.editMessageData) {
+      this.editMessage.emit({ ...this.editMessageData, content: this.message })
+      this.messageEditCancel()
     }
+  }
+
+  messageEditCancel () {
+    this.message = '';
+    this.editMessageData = undefined;
+  }
+
+  getMessageOptions (_sender: string) {
+    const options = [
+      { label: 'Reply', value: 'reply' },
+      { label: 'Copy', value: 'copy' },
+    ];
+
+    if(_sender === this.myUserId) {
+      options.push({ label: 'Edit', value: 'edit' });
+      options.push({ label: 'Delete', value: 'delete' })
+    }
+
+    return options;
   }
 
   selectedOption(option: IOption, message: IMessage) {
@@ -121,6 +140,9 @@ export class ChatComponent extends CommonDirective<ModalComponent> {
         this.clipboard.copy(message.content);
         break;
       case 'edit':
+        this.scrollToMessage(message._id)
+        this.editMessageData = message
+        this.message = message.content
         break;
       case 'delete':
         this.openOverlay();
@@ -137,6 +159,19 @@ export class ChatComponent extends CommonDirective<ModalComponent> {
     }
 
     this.closeOverlay(); 
+  }
+
+  scrollToMessage(messageId: string) {
+    setTimeout(() => {
+      const element = document.getElementById(`msg-${messageId}`);
+  
+      if (element) {
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'end'
+        });
+      }
+    }, 0);
   }
 
   override injectOutput(): void {
