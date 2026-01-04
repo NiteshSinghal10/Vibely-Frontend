@@ -6,6 +6,7 @@ export interface IMessage {
   _receiver: string;
   createdAt: string; // ISO date string
   content: string;
+  _replyMessage?: IMessage
 }
 
 export interface FriendMessages {

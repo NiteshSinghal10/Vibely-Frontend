@@ -195,11 +195,12 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
 
-  sendMessage(message: string) {
+  sendMessage({ message, _replyMessage }: { message: string, _replyMessage?: string }) {
     this.socketService.emit('sendMessage',{
       chatId: generateChatId(this.selectedUser?._id || '', this.myUserDetail?._id || ''),
       _receiver: this.selectedUser?._id || '',
-      content: message
+      content: message,
+      ...(_replyMessage ? { _replyMessage } : {})
     })
   }
 
@@ -272,11 +273,9 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
 
   deleteMessage(_id: string) {
     this.socketService.emit("deleteMessage", { _id });
-    this.removeMessageFromListing(_id)
   }
 
   editMessage(message: IMessage) {
     this.socketService.emit("editMessage", message);
-    this.updateMessageFromList(message);
   }
 }

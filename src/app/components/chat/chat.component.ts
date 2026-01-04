@@ -47,7 +47,7 @@ export class ChatComponent extends CommonDirective<ModalComponent> {
 
   message = '';
 
-  @Output() sendMessage = new EventEmitter<string>();
+  @Output() sendMessage = new EventEmitter<{message: string, _replyMessage?: string}>();
 
   @Output() loadMore = new EventEmitter();
 
@@ -103,10 +103,13 @@ export class ChatComponent extends CommonDirective<ModalComponent> {
 
   editMessageData: IMessage | undefined;
 
+  replyMessageData: IMessage | undefined;
+
   messageSend() {
     if(this.message && !this.editMessageData) {
-      this.sendMessage.emit(this.message);
+      this.sendMessage.emit({ message: this.message, ...(this.replyMessageData ? { _replyMessage: this.replyMessageData._id } : {}) });
       this.message = '';
+      this.messageReplyCancel();
     } else if(this.message && this.editMessageData) {
       this.editMessage.emit({ ...this.editMessageData, content: this.message })
       this.messageEditCancel()
@@ -116,6 +119,10 @@ export class ChatComponent extends CommonDirective<ModalComponent> {
   messageEditCancel () {
     this.message = '';
     this.editMessageData = undefined;
+  }
+
+  messageReplyCancel () {
+    this.replyMessageData = undefined;
   }
 
   getMessageOptions (_sender: string) {
@@ -135,11 +142,14 @@ export class ChatComponent extends CommonDirective<ModalComponent> {
   selectedOption(option: IOption, message: IMessage) {
     switch(option.value) {
       case 'reply':
+        this.messageEditCancel();
+        this.replyMessageData = message;
         break;
       case 'copy':
         this.clipboard.copy(message.content);
         break;
       case 'edit':
+        this.messageReplyCancel();
         this.scrollToMessage(message._id)
         this.editMessageData = message
         this.message = message.content
@@ -161,17 +171,36 @@ export class ChatComponent extends CommonDirective<ModalComponent> {
     this.closeOverlay(); 
   }
 
-  scrollToMessage(messageId: string) {
-    setTimeout(() => {
-      const element = document.getElementById(`msg-${messageId}`);
-  
-      if (element) {
-        element.scrollIntoView({
-          behavior: 'smooth',
-          block: 'end'
-        });
+  async scrollToMessage(messageId: string): Promise<boolean> {
+    const element = document.getElementById(`msg-${messageId}`);
+    let found = false;
+
+    if (element) {
+      found = true;
+
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end',
+      });
+
+      element.classList.add('bg-primary/20');
+
+      setTimeout(() => {
+        element.classList.remove('bg-primary/20');
+      }, 2000);
+    } else {
+      while (!found) {
+        this.loadMore.emit();
+        await this.waitForDomRender()
+        found = await this.scrollToMessage(messageId);
       }
-    }, 0);
+    }
+
+    return found;
+  }
+
+  waitForDomRender(): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, 500));
   }
 
   override injectOutput(): void {
