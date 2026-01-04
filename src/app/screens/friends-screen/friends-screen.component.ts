@@ -3,7 +3,7 @@ import { ChatComponent, FriendMessages, IChatUser, IMessage, IShowChat, ShowChat
 import { FriendService, LocalStorageService, MessageService, SocketService } from '../../services';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, finalize } from 'rxjs';
-import { IUser } from '../../interfaces';
+import { IFriend, IUser } from '../../interfaces';
 import { generateChatId } from '../../common-methods';
 
 @Component({
@@ -19,7 +19,7 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
   private search: string | null = '';
 
   private friendsObserver!: IntersectionObserver;
-  private _selectedUser?: IUser;
+  private _selectedUser?: IFriend;
 
   private subheading = 'Tap to start chatting';
   private defautlProfilePicture = 'profile.svg';
@@ -110,7 +110,7 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
 
-  friends: IUser[] = [];
+  friends: IFriend[] = [];
   users: IShowChat[] = []
   messages: FriendMessages[] = [];
   hasMoreFriends = true;
@@ -119,7 +119,7 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
   isMessageLoading = false;
   
   clickChat(user: IShowChat) {
-    const friendData = this.friends.find(friend => String(friend._id) === String(user.value));
+    const friendData = this.friends.find(friend => String(friend.friendDetail?._id) === String(user.value));
     this.selectedUser = friendData;
     this.users = this.users.map(userDetail => (userDetail.value === user.value ? { ...userDetail, isSelected: true } : { ...userDetail, isSelected: false }));
   }
@@ -134,12 +134,12 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
       this.friends = response.data;
 
       const users = this.friends.map(friend => ({
-        value: friend._id,
-        imgSrc: friend.picture ?? this.defautlProfilePicture,
-        name: `${friend.firstName} ${friend.lastName}`,
+        value: friend.friendDetail?._id || '',
+        imgSrc: friend.friendDetail?.picture ?? this.defautlProfilePicture,
+        name: `${friend.friendDetail?.firstName} ${friend.friendDetail?.lastName}`,
         isOnline: friend.isOnline,
         subHeading: this.subheading,
-        isSelected: !!(String(this.selectedUser?._id) === String(friend._id))
+        isSelected: !!(String(this.selectedUser?._id) === String(friend.friendDetail?._id))
       }));
 
       this.users = [ ...this.users, ...users ];
@@ -157,10 +157,10 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
   }
 
   get selectedUser(): IUser | undefined {
-    return this._selectedUser;
+    return this._selectedUser?.friendDetail;
   }
   
-  set selectedUser(user: IUser | undefined) {
+  set selectedUser(user: IFriend | undefined) {
     this._selectedUser = user;
   
     this.messages = [];
@@ -200,6 +200,7 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
       chatId: generateChatId(this.selectedUser?._id || '', this.myUserDetail?._id || ''),
       _receiver: this.selectedUser?._id || '',
       content: message,
+      _friend: this._selectedUser?._id || '',
       ...(_replyMessage ? { _replyMessage } : {})
     })
   }
