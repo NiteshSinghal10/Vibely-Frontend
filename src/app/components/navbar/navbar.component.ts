@@ -7,10 +7,11 @@ import { IUser } from '../../interfaces';
 import { ModalComponent } from '../modal';
 import { AuthService } from '../../services';
 import { environment } from '../../../environments/environment';
+import { FriendRequestDirective } from '../../directives/friend-request/friend-request.directive';
 
 @Component({
   selector: 'app-navbar',
-  imports: [DropdownDirective],
+  imports: [DropdownDirective, FriendRequestDirective],
   templateUrl: './navbar.component.html'
 })
 export class NavbarComponent extends CommonDirective<ModalComponent> {
