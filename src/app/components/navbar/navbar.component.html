@@ -8,8 +8,14 @@
      <div class="text-3xl font-semibold">Vibely</div>
   </div>
 
-  <!-- Profile  -->
-  <div class="h-full flex justify-center items-center" appDropdown [options]="options" [config]="config" (selectedOption)="selectedOption($event)" >
-    <img src="{{profileImage}}" class="h-10 cursor-pointer rounded-full">
-  </div>
+  <!-- Profile & Friend Requests  -->
+   <div class="flex items-center gap-6">
+    <!-- Friend Requests  -->
+     <img src="people.png" alt="Friend Requests" class="h-8 cursor-pointer">
+
+    <!-- Profile  -->
+    <div class="h-full flex justify-center items-center" appDropdown [options]="options" [config]="config" (selectedOption)="selectedOption($event)" >
+      <img src="{{profileImage}}" class="h-10 cursor-pointer rounded-full">
+    </div>
+   </div>
 </div>
