@@ -12,7 +12,7 @@ import { generateChatId } from '../../common-methods';
   templateUrl: './friends-screen.component.html'
 })
 export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy {
-  private page = 1;
+  private cursor = '';
   private limit = 10;
   private messagePage = 1;
   private messageLimit = 30;
@@ -89,7 +89,6 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
           this.hasMoreFriends &&
           !this.isFriendLoading
         ) {
-          this.page += 1;
           this.getFriendsRequest();
         }
       },
@@ -122,15 +121,22 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
     const friendData = this.friends.find(friend => String(friend.friendDetail?._id) === String(user.value));
     this.selectedUser = friendData;
     this.users = this.users.map(userDetail => (userDetail.value === user.value ? { ...userDetail, isSelected: true } : { ...userDetail, isSelected: false }));
+
+    this.emitMessageReadEvent();
+  }
+
+  emitMessageReadEvent() {
+    this.socketService.emit("messageRead", { _friend: this._selectedUser?._id || '' });
   }
 
   getFriendsRequest() {
     this.isFriendLoading = true;
-    this.friendService.getFriends(this.search, this.page, this.limit)
+    this.friendService.getFriends(this.search, this.cursor, this.limit)
     .pipe(
       finalize(() => this.isFriendLoading = false)
     )
     .subscribe(response => {
+      this.cursor = response.data[response.data.length - 1].lastActivity.toString();
       this.friends = response.data;
 
       const users = this.friends.map(friend => ({
@@ -139,7 +145,9 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
         name: `${friend.friendDetail?.firstName} ${friend.friendDetail?.lastName}`,
         isOnline: friend.isOnline,
         subHeading: this.subheading,
-        isSelected: !!(String(this.selectedUser?._id) === String(friend.friendDetail?._id))
+        isSelected: !!(String(this.selectedUser?._id) === String(friend.friendDetail?._id)),
+        lastMessage: friend.lastActivity,
+        newMessages: friend.newMessage || 0
       }));
 
       this.users = [ ...this.users, ...users ];
@@ -207,14 +215,18 @@ export class FriendsScreenComponent implements OnInit, AfterViewInit, OnDestroy 
 
   receiveMessage() {
     this.socketService.on('sentMessage').subscribe(message => {
-      const messageWithDate = this.groupMessages([message]);
+      if(message._sender.toString() === this.selectedUser?._id?.toString()) {
+        const messageWithDate = this.groupMessages([message]);
 
-      const messageIndex = this.messages.findIndex(messageDate => messageDate.date === messageWithDate[0].date);
-
-      if(messageIndex !== -1) {
-        this.messages[messageIndex].messages = [message, ...this.messages[messageIndex].messages]
-      } else {
-        this.messages = [...messageWithDate, ...this.messages];
+        const messageIndex = this.messages.findIndex(messageDate => messageDate.date === messageWithDate[0].date);
+  
+        if(messageIndex !== -1) {
+          this.messages[messageIndex].messages = [message, ...this.messages[messageIndex].messages]
+        } else {
+          this.messages = [...messageWithDate, ...this.messages];
+        }
+  
+        this.emitMessageReadEvent();
       }
     })
   }

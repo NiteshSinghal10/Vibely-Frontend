@@ -75,23 +75,21 @@
       <div #messagesElement></div>
     </div>
 
-    @if(editMessageData || replyMessageData) {
-      <!-- show edit message  -->
-      <div class="pt-1 px-12 w-full flex justify-between items-center bg-background/60">
+    <!-- Send message Input  -->
+    <div class="pt-2 relative w-full h-auto px-8 pb-4 flex items-center bg-transparent">
+      <div [class]="`relative h-full w-full bg-white rounded-b-3xl ${replyMessageData || editMessageData ? 'rounded-t-xl' : 'rounded-t-3xl'}`">
         @if(editMessageData) {
-          <div class="flex justify-between items-center w-full">
+          <div class="flex justify-between items-center w-auto mx-4 my-2">
             <p class="text-sm text-dark-gray font-semibold">Edit Message</p>
             <div class="cursor-pointer p-1.5 rounded-full hover:bg-light-gray" (click)="messageEditCancel()">
               <asset-cross [height]="`12`" [width]="`12`" [fill]="`#757575`"/>
             </div>
           </div>
-          
         } @else if(replyMessageData) {
-          <div class="bg-bg-gray rounded-lg w-full flex items-center overflow-hidden h-9">
+          <div class="mx-2 mt-2 bg-bg-gray rounded-lg w-auto flex items-center overflow-hidden h-9">
             <div class="border-2 h-full" [class]="myUserId === replyMessageData._sender ? 'border-secondary' : 'border-light-gray'"></div>
             <div class="w-full flex items-center justify-between px-2">
               <div class="truncate text-dark-gray" title="{{replyMessageData.content}}">
-                <!-- hello sljkdk slkdjfslkd lksdj flsdkj lskd fjlsdkf sdlfkjsdlf sdlfj dslfkdsjflsd fldjfhlsdkfj sdlkf ldksj how are you dfklfjdsl lskdfjsdlk lsdkfjdsl fksjdlfksdjflsd fkdsjflsdkfj sdlkfjsdl fkjsdlk jl -->
                  {{replyMessageData.content}}
               </div>
   
@@ -101,13 +99,9 @@
             </div>
           </div>
         }
+        <input type="text" [class]="`py-3 px-4 pr-13 w-full outline-none `" placeholder="Type a message" [(ngModel)]="message" />
+        <asset-send-message [height]="'35px'" [width]="'35px'" [class]="'align-middle p-1 rounded-full absolute right-3 bottom-2 cursor-pointer hover:bg-bg-gray'" [fill]="'#3A9DFF'" (click)="messageSend()" />
       </div>
-    }
-
-    <!-- Send message Input  -->
-    <div class="pt-2 relative w-full px-8 pb-4 flex items-center bg-background/60">
-      <input type="text" class="bg-white py-3 px-4 pr-13 w-full outline-none rounded-full" placeholder="Type a message" [(ngModel)]="message" />
-      <asset-send-message [height]="'35px'" [width]="'35px'" [class]="'align-middle p-1 rounded-full absolute right-10 top-3.5 cursor-pointer hover:bg-bg-gray'" [fill]="'#3A9DFF'" (click)="messageSend()" />
     </div>
   </div>
 </div>

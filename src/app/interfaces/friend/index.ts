@@ -10,4 +10,6 @@ export interface IFriend {
   updatedAt: Date;
   isOnline?: boolean;
   friendDetail?: IUser;
+  newMessage?: number;
+  lastActivity: Date;
 }

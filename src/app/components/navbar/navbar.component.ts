@@ -85,4 +85,8 @@ export class NavbarComponent extends CommonDirective<ModalComponent> {
         break;
     }
   }
+
+  navigateToHomeScreen() {
+    this.router.navigate(['/']);
+  }
 }
