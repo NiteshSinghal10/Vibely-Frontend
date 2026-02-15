@@ -9,8 +9,6 @@ import { OverlayService } from '../../services';
 })
 export class FriendRequestDirective extends CommonDirective<FriendRequestComponent> {
 
-  @Input() friendRequests: IFriendRequest[] = [];
-
   constructor(
     overlayService: OverlayService,
     elementRef: ElementRef,
@@ -18,18 +16,4 @@ export class FriendRequestDirective extends CommonDirective<FriendRequestCompone
     super(overlayService, elementRef);
     this.component = FriendRequestComponent;
   }
-
-  override injectInput(): void {
-    if(this.componentRef) {
-      if(this.friendRequests.length) {
-        this.componentRef.instance.friendRequests = this.friendRequests;
-      }
-    }
-  }
-
-  override injectOutput(): void {
-
-    // this.overlayRef?.backdropClick().subscribe(() => this.selectionComplete.emit(true));
-  }
-
 }

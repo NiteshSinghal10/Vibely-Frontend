@@ -11,7 +11,15 @@
   <!-- Profile & Friend Requests  -->
    <div class="flex items-center gap-6">
     <!-- Friend Requests  -->
-     <img src="people.png" alt="Friend Requests" class="h-8 cursor-pointer" appFriendRequest >
+     <div class="relative">
+       <img src="people.png" alt="Friend Requests" class="h-8 cursor-pointer" appFriendRequest >
+
+       @if(friendRequestsCount) {
+          <div class="absolute -bottom-1 -left-1 bg-primary text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+          {{friendRequestsCount}}
+          </div>
+        }
+     </div>
 
     <!-- Profile  -->
     <div class="h-full flex justify-center items-center" appDropdown [options]="options" [config]="config" (selectedOption)="selectedOption($event)" >

@@ -1,8 +1,8 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonDirective, DropdownDirective } from '../../directives';
 import { IDropdownConfig, IOption } from '../dropdown';
-import { LocalStorageService, OverlayService } from '../../services';
+import { FriendRequestsService, LocalStorageService, OverlayService } from '../../services';
 import { IUser } from '../../interfaces';
 import { ModalComponent } from '../modal';
 import { AuthService } from '../../services';
@@ -14,12 +14,14 @@ import { FriendRequestDirective } from '../../directives/friend-request/friend-r
   imports: [DropdownDirective, FriendRequestDirective],
   templateUrl: './navbar.component.html'
 })
-export class NavbarComponent extends CommonDirective<ModalComponent> {
+export class NavbarComponent extends CommonDirective<ModalComponent> implements OnInit {
+  friendRequestsCount = 0;
 
   constructor(
     private router: Router,
     private localStorageService: LocalStorageService,
     private authService: AuthService,
+    private friendRequestsService: FriendRequestsService,
     overlayService: OverlayService,
     elementRef: ElementRef,
   ) {
@@ -56,6 +58,10 @@ export class NavbarComponent extends CommonDirective<ModalComponent> {
     }
   }
 
+  ngOnInit(): void {
+    this.getFriendRequestsCount();
+  }
+
   get userProfile() {
     const user = this.localStorageService.getItem<IUser>('user');
     return user;
@@ -63,6 +69,12 @@ export class NavbarComponent extends CommonDirective<ModalComponent> {
 
   get profileImage() {
     return this.userProfile ? this.userProfile.picture : 'profile.svg';
+  }
+
+  getFriendRequestsCount() {
+    this.friendRequestsService.countFriendRequests().subscribe(res => {
+      this.friendRequestsCount = res.data;
+    })
   }
 
   override injectOutput(): void {

@@ -1,64 +1,86 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { IFriendRequest } from './friend-request.types';
+import { FriendRequestsService } from '../../services';
+import { FriendRequestLoaderComponent } from '../friend-request-loader';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-friend-request',
-  imports: [],
+  imports: [FriendRequestLoaderComponent],
   templateUrl: './friend-request.component.html'
 })
-export class FriendRequestComponent {
-  defaultProfilePicture = 'profile.svg';
+export class FriendRequestComponent implements OnInit {
+  private page = 1;
+  private limit = 10;
+  private hasMoreFriendRequests = true;
+  private friendsObserver!: IntersectionObserver;
 
-  friendRequests: IFriendRequest[] = [
-    {
-      _id: '1',
-      name: 'John Doe',
-      profilePicture: '',
-    },
-    {
-      _id: '2',
-      name: 'Jane Doe',
-      profilePicture: 'profile.svg',
-    },
-    {
-      _id: '3',
-      name: 'Jim Doe',
-      profilePicture: 'profile.svg',
-    },
-    {
-      _id: '4',
-      name: 'Jill Doe',
-      profilePicture: 'profile.svg',
-    },
-    {
-      _id: '5',
-      name: 'Jack Doe',
-      profilePicture: 'profile.svg',
-    },
-    {
-      _id: '6',
-      name: 'Jill Doe',
-      profilePicture: 'profile.svg',
-    },
-    {
-      _id: '7',
-      name: 'Jack Doe',
-      profilePicture: 'profile.svg',
-    },
-    {
-      _id: '8',
-      name: 'Jill Doe',
-      profilePicture: 'profile.svg',
-    },
-    {
-      _id: '9',
-      name: 'Jack Doe',
-      profilePicture: 'profile.svg',
-    },
-    {
-      _id: '10',
-      name: 'Jill Doe kdfjsdl flskdjf lsdkfj lsdkfjsldkf jsdlfkjd flksjdflskd flskd fjsldkfjsd flds fjlsdkf dslfk dslkjf ',
-      profilePicture: 'profile.svg',
-    },
-  ];
+  loading = false;
+  
+  defaultProfilePicture = 'profile.svg';
+  
+
+  friendRequests: IFriendRequest[] = [];
+  @ViewChild('friendRequestsElement', { static: false })
+  friendRequestsElement!: ElementRef;
+  @ViewChild('friendRequestsScrollableContainer', { static: false })
+  friendRequestsScrollableContainer!: ElementRef;
+
+  constructor(private friendRequestsService: FriendRequestsService) {}
+
+  ngOnInit(): void {
+    this.getFriendRequests();
+  }
+
+  ngAfterViewInit(): void {
+    this.friendsObserver = new IntersectionObserver(
+      entries => {
+        if (
+          entries[0].isIntersecting &&
+          this.hasMoreFriendRequests &&
+          !this.loading
+        ) {
+          this.page = this.page + 1;
+          this.getFriendRequests();
+        }
+      },
+      {
+        root: this.friendRequestsScrollableContainer.nativeElement,
+        rootMargin: '10px'
+      }
+    );
+
+    this.friendsObserver.observe(
+      this.friendRequestsElement.nativeElement
+    );
+  }
+
+  getFriendRequests() {
+    this.loading = true;
+    this.friendRequestsService.getFriendRequests(this.page, this.limit)
+    .pipe(
+      finalize(() => {
+        this.loading = false;
+      })
+    )
+    .subscribe(res => {
+      this.friendRequests = [...this.friendRequests, ...res.data.map(request => ({
+        _id: request._id,
+        name: `${request.from.firstName} ${request.from.lastName}`,
+        profilePicture: request.from.picture,
+      }))];
+
+
+      if(res.data.length < 1 || res.data.length < this.limit) {
+        this.hasMoreFriendRequests = false;
+      }
+    })
+  }
+
+  updateFriendRequestStatus(id: string, status: "ACCEPTED" | "REJECTED") {
+    this.friendRequestsService.updateFriendRequest(id, status)
+    .subscribe(res => {
+      this.friendRequests = this.friendRequests.filter(request => request._id !== id);
+    })
+  }
 }
