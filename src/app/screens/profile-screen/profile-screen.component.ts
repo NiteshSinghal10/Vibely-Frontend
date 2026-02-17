@@ -77,7 +77,7 @@ export class ProfileScreenComponent implements OnInit {
   }
 
   get flagLink() {
-    return this.userInfo ? `https://flagcdn.com/${this.userInfo.countryCode.toLowerCase()}.svg` : '';
+    return this.userInfo ? `https://flagcdn.com/${this.userInfo.countryCode?.toLowerCase()}.svg` : '';
   }
 
   selectInterest(chip: IMultiSelectChipOptions) {
