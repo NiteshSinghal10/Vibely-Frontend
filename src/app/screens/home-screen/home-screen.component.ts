@@ -14,6 +14,7 @@ import { SocketService } from '../../services';
   providers: [TailwindColorPipe]
 })
 export class HomeScreenComponent implements OnInit {
+  loading = false;
 
   constructor(
     private countryService: CountryService,
@@ -58,5 +59,15 @@ export class HomeScreenComponent implements OnInit {
     if(optionIndex !== -1) {
       this.options[optionIndex].selected = false; 
     }
+  }
+
+  randomConnect() {
+    this.socketService.emit("randomConnect");
+    this.loading = true;
+  }
+
+  cancelVibe() {
+    this.socketService.emit('cancelRandomConnect');
+    this.loading = false;
   }
 }

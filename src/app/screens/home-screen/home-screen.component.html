@@ -1,52 +1,65 @@
 <div class="flex flex-col h-[92vh] justify-between items-center bg-transparent">
-  <div class="h-[45vh] w-full flex flex-col items-center justify-between">
-    <!-- slogan  -->
-    <div class="flex justify-center items-center text-4xl font-semibold h-3/10">
-      Start Vibe a Random Stranger
+  @if(loading) {
+    <div class="h-[75%] w-full flex justify-center items-center">
+      <img src="loader.svg" alt="loader" class="h-[80%] w-full mix-blend-difference">
     </div>
   
-    <!-- image  -->
-    <div class="h-7/10 overflow-hidden">
-        <video src="chatting.mp4" class="relative -top-[15%] h-[130%]" autoplay muted loop playsinline preload="auto"></video>
+    <div class="h-[25%] w-full flex justify-center items-center">
+      <Button class="cursor-pointer text-2xl py-2 px-4 w-[30vw] border-0 rounded-2xl font-semibold text-white
+        bg-linear-to-r from-primary to-secondary transform transition-transform duration-300 hover:scale-110" (click)="cancelVibe()">
+        Cancel Vibe Now!
+      </Button>
     </div>
-  </div>
-
-  <!-- Filters & Start Chating Button  -->
-   <div class="w-full h-[47vh] flex flex-col justify-between items-center gap-4 pt-4 pb-16">
-    <!-- Filters  -->
-     <div class="w-[24vw] flex flex-col gap-4">
-      <!-- Gender  -->
-      <div class="flex flex-col gap-2">
-        <p class="text-lg font-semibold text-gray-800">Gender</p>
-
-        <!-- Gender Radio Buttons  -->
-        <div class="flex gap-8 px-4">
-          <label class="cursor-pointer " ><input type="radio" name="gender" value="Any" class="cursor-pointer"> Any </label>
-          <label class="cursor-pointer "><input type="radio" name="gender" value="Male" class="cursor-pointer"> Male </label>
-          <label class="cursor-pointer "><input type="radio" name="gender" value="Female" class="cursor-pointer"> Female </label>
-        </div>
+  } @else {
+    <div class="h-[45vh] w-full flex flex-col items-center justify-between">
+      <!-- slogan  -->
+      <div class="flex justify-center items-center text-4xl font-semibold h-3/10">
+        Start Vibe a Random Stranger
       </div>
-
-      <!-- country  -->
-      <div class="flex flex-col gap-2">
-        <div class="flex justify-between">
-          <p class="font-semibold text-lg text-gray-800">Country</p>
-
-          <div appDropdown [options]="options" [config]="config" (selectedOption)="optionSelected($event)" (deselectedOption)="optionDeselected($event)" class="flex items-center gap-1 border border-primary rounded-full overflow-hidden py-0.5 pr-3 pl-2 w-max cursor-pointer" >
-            <asset-plus [class]="'fill-primary'"/>
-            <p class="text-primary">Add Country</p>
+    
+      <!-- image  -->
+      <div class="h-7/10 overflow-hidden">
+          <video src="chatting.mp4" class="relative -top-[15%] h-[130%]" autoplay muted loop playsinline preload="auto"></video>
+      </div>
+    </div>
+  
+    <!-- Filters & Start Chating Button  -->
+     <div class="w-full h-[47vh] flex flex-col justify-between items-center gap-4 pt-4 pb-16">
+      <!-- Filters  -->
+       <div class="w-[24vw] flex flex-col gap-4">
+        <!-- Gender  -->
+        <div class="flex flex-col gap-2">
+          <p class="text-lg font-semibold text-gray-800">Gender</p>
+  
+          <!-- Gender Radio Buttons  -->
+          <div class="flex gap-8 px-4">
+            <label class="cursor-pointer " ><input type="radio" name="gender" value="Any" class="cursor-pointer"> Any </label>
+            <label class="cursor-pointer "><input type="radio" name="gender" value="Male" class="cursor-pointer"> Male </label>
+            <label class="cursor-pointer "><input type="radio" name="gender" value="Female" class="cursor-pointer"> Female </label>
           </div>
         </div>
-        
-        <!-- chips  -->
-        <app-selected-chips-component [minHeight]="'80px'" [maxHeight]="'100px'" [width]="'100%'" [chips]="chips" />
-      </div>
+  
+        <!-- country  -->
+        <div class="flex flex-col gap-2">
+          <div class="flex justify-between">
+            <p class="font-semibold text-lg text-gray-800">Country</p>
+  
+            <div appDropdown [options]="options" [config]="config" (selectedOption)="optionSelected($event)" (deselectedOption)="optionDeselected($event)" class="flex items-center gap-1 border border-primary rounded-full overflow-hidden py-0.5 pr-3 pl-2 w-max cursor-pointer" >
+              <asset-plus [class]="'fill-primary'"/>
+              <p class="text-primary">Add Country</p>
+            </div>
+          </div>
+          
+          <!-- chips  -->
+          <app-selected-chips-component [minHeight]="'80px'" [maxHeight]="'100px'" [width]="'100%'" [chips]="chips" />
+        </div>
+       </div>
+  
+      <!-- Start Chating Button  -->
+      <button class="cursor-pointer text-2xl py-2 px-4 w-[30vw] border-0 rounded-2xl font-semibold text-white
+      bg-linear-to-r from-primary to-secondary transform transition-transform duration-300 hover:scale-110" (click)="randomConnect()">
+        Go Vibe Now!
+      </button>
      </div>
-
-    <!-- Start Chating Button  -->
-    <button class="cursor-pointer text-2xl py-2 px-4 w-[30vw] border-0 rounded-2xl font-semibold text-white
-    bg-linear-to-r from-primary to-secondary transform transition-transform duration-300 hover:scale-110">
-      Go Vibe Now!
-    </button>
-   </div>
+  }
 </div>
